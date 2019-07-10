@@ -26,7 +26,7 @@ variable "zone_public_count" {
   default     = 0
 }
 
-variable "zone_pubic_names" {
+variable "zone_public_names" {
   description = "Names of public hosted zones to be created in the module."
   default     = []
 }
