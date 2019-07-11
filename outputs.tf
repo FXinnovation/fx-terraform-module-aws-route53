@@ -18,7 +18,7 @@ output "zone_public_ids" {
 
 output "resolver_inbound_security_group_id" {
   description = "ID of the security group shared with the INBOUND resolvers."
-  value       = "${element(compact(concat(aws_security_group.this_inbound.*.id, list(""))), 0)}"
+  value       = "${element(concat(aws_security_group.this_inbound.*.id, list("")), 0)}"
 }
 
 output "resolver_inbound_ids" {
