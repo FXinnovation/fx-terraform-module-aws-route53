@@ -16,9 +16,9 @@ output "zone_public_ids" {
 # Resolver endpoints
 #####
 
-output "resolver_inbound_security_group_id" {
-  description = "ID of the security group shared with the INBOUND resolvers."
-  value       = "${element(concat(aws_security_group.this_inbound.*.id, list("")), 0)}"
+output "resolver_inbound_security_group_ids" {
+  description = "IDs of the security group for the INBOUND resolvers."
+  value       = "${compact(concat(aws_security_group.this_inbound.*.id, list("")))}"
 }
 
 output "resolver_inbound_ids" {

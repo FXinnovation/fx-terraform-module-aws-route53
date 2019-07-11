@@ -15,13 +15,18 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = "${data.aws_vpc.default.id}"
+data "aws_subnet" "sub1" {
+  vpc_id     = "${data.aws_vpc.default.id}"
+  cidr_block = "172.31.0.0/20"
+}
+
+data "aws_subnet" "sub2" {
+  vpc_id     = "${data.aws_vpc.default.id}"
+  cidr_block = "172.31.16.0/20"
 }
 
 resource "aws_vpc" "main" {
-  cidr_block       = "10.1.0.0/16"
-  instance_tenancy = "dedicated"
+  cidr_block = "10.1.0.0/16"
 }
 
 resource "aws_subnet" "main_sub1" {
@@ -82,8 +87,8 @@ module "default_alternative" {
   resolver_inbound_names = ["${random_string.this.result}inResolver1", "${random_string.this.result}inResolver2"]
   resolver_inbound_ip_addresses = {
     "0" = [
-      "172.31.16.197",
-      "172.31.32.197",
+      "172.31.0.5",
+      "172.31.16.5",
     ]
 
     "1" = [
@@ -93,8 +98,8 @@ module "default_alternative" {
   }
   resolver_inbound_subnet_ids = {
     "0" = [
-      "${element(data.aws_subnet_ids.default.ids, 0)}",
-      "${element(data.aws_subnet_ids.default.ids, 1)}",
+      "${data.aws_subnet.sub1.id}",
+      "${data.aws_subnet.sub2.id}",
     ]
 
     "1" = [
