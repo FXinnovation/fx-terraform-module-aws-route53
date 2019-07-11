@@ -106,4 +106,25 @@ module "default" {
   }
   resolver_outbound_security_group_name          = "${random_string.this.result}outResolver"
   resolver_outbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+
+  #####
+  # Forward rules
+  #####
+
+  rule_forward_count        = 1
+  rule_forward_domain_names = ["${random_string.this.result}.tftest-rule-example.com"]
+  rule_forward_names        = ["${random_string.this.result}ruleForward"]
+  rule_forward_resolver_target_ips = {
+    "0" = [
+      {
+        ip = "123.45.67.89"
+      },
+      {
+        ip = "123.45.67.90"
+      },
+    ]
+  }
+  rule_forward_tags = {
+    Name = "${random_string.this.result}tftest"
+  }
 }
