@@ -15,6 +15,16 @@ data "aws_vpc" "default" {
   default = true
 }
 
+data "aws_subnet" "sub1" {
+  vpc_id     = "${data.aws_vpc.default.id}"
+  cidr_block = "172.31.0.0/20"
+}
+
+data "aws_subnet" "sub2" {
+  vpc_id     = "${data.aws_vpc.default.id}"
+  cidr_block = "172.31.16.0/20"
+}
+
 resource "aws_vpc" "main" {
   cidr_block       = "10.1.1.0/24"
   instance_tenancy = "dedicated"
@@ -51,4 +61,28 @@ module "default" {
   zone_tags = {
     Name = "${random_string.this.result}tftest"
   }
+
+  #####
+  # Resolvers
+  #####
+
+  resolver_tags = {
+    Name = "${random_string.this.result}tftest"
+  }
+  resolver_inbound_count = 1
+  resolver_inbound_names = ["${random_string.this.result}inResolver"]
+  resolver_inbound_ip_addresses = {
+    "0" = [
+      "172.31.0.5",
+      "172.31.16.5",
+    ]
+  }
+  resolver_inbound_subnet_ids = {
+    "0" = [
+      "${data.aws_subnet.sub1.id}",
+      "${data.aws_subnet.sub2.id}",
+    ]
+  }
+  resolver_inbound_security_group_name          = "${random_string.this.result}inResolver"
+  resolver_inbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
 }
