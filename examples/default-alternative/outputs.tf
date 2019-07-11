@@ -21,3 +21,19 @@ output "route53_resolver_inbound_arns" {
 output "route53_resolver_inbound_host_vpc_ids" {
   value = "${module.default_alternative.resolver_inbound_host_vpc_ids}"
 }
+
+output "route53_resolver_outbound_security_group_id" {
+  value = "${module.default_alternative.zone_public_ids}"
+}
+
+output "route53_resolver_outbound_ids" {
+  value = "${module.default_alternative.zone_public_ids}"
+}
+
+output "route53_resolver_outbound_arns" {
+  value = "${module.default_alternative.zone_public_ids}"
+}
+
+output "route53_resolver_outbound_host_vpc_ids" {
+  value = "${module.default_alternative.zone_public_ids}"
+}
