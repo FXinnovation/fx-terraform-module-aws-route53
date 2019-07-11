@@ -25,6 +25,12 @@ Limitations:
 | resolver\_outbound\_security\_group\_name | Name of the security groups shared for OUTBOUND resolvers. | string | `"outbound-resolver"` | no |
 | resolver\_outbound\_subnet\_ids | Object of lists containing the subnet IDs corresponding to the IP addresses for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_tags | Tags specific to the resolvers to be created in the module. Will be merged with tags. | map | `{}` | no |
+| rule\_forward\_count | How many resolvers rules to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
+| rule\_forward\_domain\_names | Domain names of the resolvers rules to be created in the module. | list | `[]` | no |
+| rule\_forward\_names | Names of the resolvers rules to be created in the module. | list | `[]` | no |
+| rule\_forward\_resolver\_endpoint\_ids | IDs of the resolver endpoints to be used for the resolver rules. If not specify, the first OUBOUND resolver created by this module will be used for all the rules. | list | `[]` | no |
+| rule\_forward\_resolver\_target\_ips | Object of lists of objects containing target IPs for the resolver rules. Look at examples for correct usage. | map | `{}` | no |
+| rule\_forward\_tags | Tags specific to the resolvers rules to be created in the module. Will be merged with tags. | map | `{}` | no |
 | tags | Tags to be shared among all resources of this module. | map | `{}` | no |
 | vpc\_id | ID of the VPC where to create resources for this module. | string | `""` | no |
 | zone\_private\_comments | Comments of private hosted zones to be created in the module. | list | `[]` | no |

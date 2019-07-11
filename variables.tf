@@ -138,3 +138,37 @@ variable "resolver_outbound_security_group_allowed_cidrs" {
   description = "CIDRs allowed to perform DNS request to the OUTBOUND resolvers."
   default     = ["10.0.0.0/8"]
 }
+
+#####
+# Forward rules
+#####
+
+variable "rule_forward_count" {
+  description = "How many resolvers rules to be created in the module. This value cannot be computed automatically in Terraform 0.11."
+  default     = 0
+}
+
+variable "rule_forward_domain_names" {
+  description = "Domain names of the resolvers rules to be created in the module."
+  default     = []
+}
+
+variable "rule_forward_names" {
+  description = "Names of the resolvers rules to be created in the module."
+  default     = []
+}
+
+variable "rule_forward_resolver_endpoint_ids" {
+  description = "IDs of the resolver endpoints to be used for the resolver rules. If not specify, the first OUBOUND resolver created by this module will be used for all the rules."
+  default     = []
+}
+
+variable "rule_forward_resolver_target_ips" {
+  description = "Object of lists of objects containing target IPs for the resolver rules. Look at examples for correct usage."
+  default     = {}
+}
+
+variable "rule_forward_tags" {
+  description = "Tags specific to the resolvers rules to be created in the module. Will be merged with tags."
+  default     = {}
+}

@@ -250,6 +250,35 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
 }
 
 #####
+# Forward rules
+#####
+
+resource "aws_route53_resolver_rule" "this_forward" {
+  count = "${var.enable ? var.rule_forward_count : 0}"
+
+  domain_name          = "${element(var.rule_forward_domain_names, count.index)}"
+  name                 = "${element(var.rule_forward_names, count.index)}"
+  rule_type            = "FORWARD"
+  resolver_endpoint_id = "${element(concat(var.rule_forward_resolver_endpoint_ids, list("")), 0) != "" ? element(concat(var.rule_forward_resolver_endpoint_ids, list("")), count.index) : element(concat(aws_route53_resolver_endpoint.this_outbound.*.id, list("")), 0)}"
+
+  target_ip = [
+    "${var.rule_forward_resolver_target_ips[count.index]}",
+  ]
+
+  tags = "${merge(
+    map("Terraform", "true"),
+    map("Name", element(var.rule_forward_names, count.index)),
+    var.tags,
+    var.rule_forward_tags
+  )}"
+}
+
+//resource "aws_route53_resolver_rule_association" "example" {
+//  resolver_rule_id = "${aws_route53_resolver_rule.sys.id}"
+//  vpc_id           = "${aws_vpc.foo.id}"
+//}
+
+#####
 # Records
 #####
 
