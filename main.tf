@@ -50,7 +50,7 @@ resource "aws_route53_zone_association" "this_private" {
 #####
 
 resource "aws_security_group" "this_inbound" {
-  count = "${var.enable && var.resolver_inbound_count > 1 ? 1 : 0}"
+  count = "${var.enable && var.resolver_inbound_count > 0 ? 1 : 0}"
 
   name        = "${var.resolver_inbound_security_group_name}"
   description = "Security group for inbound resolvers."
@@ -65,7 +65,7 @@ resource "aws_security_group" "this_inbound" {
 }
 
 resource "aws_security_group_rule" "this_inbound_53_tcp" {
-  count = "${var.enable && var.resolver_inbound_count > 1 ? 1 : 0}"
+  count = "${var.enable && var.resolver_inbound_count > 0 ? 1 : 0}"
 
   security_group_id = "${element(concat(aws_security_group.this_inbound.*.id, list("")), 0)}"
 
@@ -77,7 +77,7 @@ resource "aws_security_group_rule" "this_inbound_53_tcp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_53_udp" {
-  count = "${var.enable && var.resolver_inbound_count > 1 ? 1 : 0}"
+  count = "${var.enable && var.resolver_inbound_count > 0 ? 1 : 0}"
 
   security_group_id = "${element(concat(aws_security_group.this_inbound.*.id, list("")), 0)}"
 
@@ -89,7 +89,7 @@ resource "aws_security_group_rule" "this_inbound_53_udp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_853_tcp" {
-  count = "${var.enable && var.resolver_inbound_count > 1 ? 1 : 0}"
+  count = "${var.enable && var.resolver_inbound_count > 0 ? 1 : 0}"
 
   security_group_id = "${element(concat(aws_security_group.this_inbound.*.id, list("")), 0)}"
 
@@ -101,7 +101,7 @@ resource "aws_security_group_rule" "this_inbound_853_tcp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_853_udp" {
-  count = "${var.enable && var.resolver_inbound_count > 1 ? 1 : 0}"
+  count = "${var.enable && var.resolver_inbound_count > 0 ? 1 : 0}"
 
   security_group_id = "${element(concat(aws_security_group.this_inbound.*.id, list("")), 0)}"
 
