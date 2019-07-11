@@ -82,8 +82,8 @@ module "default_alternative" {
   resolver_inbound_names = ["${random_string.this.result}inResolver1", "${random_string.this.result}inResolver2"]
   resolver_inbound_ip_addresses = {
     "0" = [
-      "172.31.32.8",
-      "172.31.0.8",
+      "172.31.16.197",
+      "172.31.32.197",
     ]
 
     "1" = [

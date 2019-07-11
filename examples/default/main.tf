@@ -67,8 +67,8 @@ module "default" {
   resolver_inbound_names = ["${random_string.this.result}inResolver"]
   resolver_inbound_ip_addresses = {
     "0" = [
+      "172.31.16.5",
       "172.31.32.5",
-      "172.31.0.5",
     ]
   }
   resolver_inbound_subnet_ids = {
