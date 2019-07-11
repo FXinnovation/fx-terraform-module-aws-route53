@@ -3,7 +3,7 @@
 This module is not to be deployed directly.
 
 Limitations:
-- All resolvers of the same type shares the same security group.
+- All resolvers of the same type shares the same security group rules.
 - All resolvers must have an exact number of 2 IPs. This cannot be worked around in Terraform 0.11.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
