@@ -67,7 +67,7 @@ variable "zone_private_vpc_attachement_ids" {
 }
 
 #####
-# Resolver endpoints
+# Resolver endpoints inbound
 #####
 
 variable "resolver_tags" {
@@ -102,5 +102,39 @@ variable "resolver_inbound_security_group_name" {
 
 variable "resolver_inbound_security_group_allowed_cidrs" {
   description = "CIDRs allowed to perform DNS request to the INBOUND resolvers."
+  default     = ["10.0.0.0/8"]
+}
+
+#####
+# Resolver endpoints outbound
+#####
+
+variable "resolver_outbound_count" {
+  description = "How many OUTBOUND resolvers to be created in the module. This value cannot be computed automatically in Terraform 0.11."
+  default     = 0
+}
+
+variable "resolver_outbound_names" {
+  description = "Names of the OUTBOUND resolvers to be created in the module."
+  default     = []
+}
+
+variable "resolver_outbound_ip_addresses" {
+  description = "Object of lists containing the IP addresses corresponding to the subnet IDs for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage."
+  default     = {}
+}
+
+variable "resolver_outbound_subnet_ids" {
+  description = "Object of lists containing the subnet IDs corresponding to the IP addresses for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage."
+  default     = {}
+}
+
+variable "resolver_outbound_security_group_name" {
+  description = "Name of the security groups shared for OUTBOUND resolvers."
+  default     = "outbound-resolver"
+}
+
+variable "resolver_outbound_security_group_allowed_cidrs" {
+  description = "CIDRs allowed to perform DNS request to the OUTBOUND resolvers."
   default     = ["10.0.0.0/8"]
 }

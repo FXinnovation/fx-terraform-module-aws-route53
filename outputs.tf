@@ -13,7 +13,7 @@ output "zone_public_ids" {
 }
 
 #####
-# Resolver endpoints
+# Resolver endpoints inbound
 #####
 
 output "resolver_inbound_security_group_ids" {
@@ -34,4 +34,28 @@ output "resolver_inbound_arns" {
 output "resolver_inbound_host_vpc_ids" {
   description = "IDs of the host VPC of the the INBOUND resolvers."
   value       = "${compact(concat(aws_route53_resolver_endpoint.this_inbound.*.host_vpc_id, list("")))}"
+}
+
+#####
+# Resolver endpoints outbound
+#####
+
+output "resolver_outbound_security_group_id" {
+  description = "ID of the security group shared with the OUTBOUND resolvers."
+  value       = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+}
+
+output "resolver_outbound_ids" {
+  description = "ID of the security group shared with the OUTBOUND resolvers."
+  value       = "${compact(concat(aws_route53_resolver_endpoint.this_outbound.*.id, list("")))}"
+}
+
+output "resolver_outbound_arns" {
+  description = "ID of the security group shared with the OUTBOUND resolvers."
+  value       = "${compact(concat(aws_route53_resolver_endpoint.this_outbound.*.arn, list("")))}"
+}
+
+output "resolver_outbound_host_vpc_ids" {
+  description = "IDs of the host VPC of the the OUTBOUND resolvers."
+  value       = "${compact(concat(aws_route53_resolver_endpoint.this_outbound.*.host_vpc_id, list("")))}"
 }

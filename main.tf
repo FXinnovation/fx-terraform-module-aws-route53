@@ -46,7 +46,7 @@ resource "aws_route53_zone_association" "this_private" {
 }
 
 #####
-# Resolver endpoints
+# Resolver endpoints inbound
 #####
 
 data "aws_subnet" "this_inbound" {
@@ -142,6 +142,110 @@ resource "aws_route53_resolver_endpoint" "this_inbound" {
   tags = "${merge(
     map("Terraform", "true"),
     map("Name", element(var.resolver_inbound_names, count.index)),
+    var.tags,
+    var.resolver_tags
+  )}"
+}
+
+#####
+# Resolver endpoints outbound
+#####
+
+resource "aws_security_group" "this_outbound" {
+  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+
+  name        = "${var.resolver_outbound_security_group_name}"
+  description = "Security group for outbound resolvers."
+  vpc_id      = "${var.vpc_id}"
+
+  tags = "${merge(
+    map("Terraform", "true"),
+    map("Name", var.resolver_outbound_security_group_name),
+    var.tags,
+    var.resolver_tags
+  )}"
+}
+
+resource "aws_security_group_rule" "this_outbound_53_tcp" {
+  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+
+  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+
+  type        = "ingress"
+  from_port   = 53
+  to_port     = 53
+  protocol    = "tcp"
+  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
+}
+
+resource "aws_security_group_rule" "this_outbound_53_udp" {
+  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+
+  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+
+  type        = "ingress"
+  from_port   = 53
+  to_port     = 53
+  protocol    = "udp"
+  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
+}
+
+resource "aws_security_group_rule" "this_outbound_853_tcp" {
+  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+
+  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+
+  type        = "ingress"
+  from_port   = 853
+  to_port     = 853
+  protocol    = "tcp"
+  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
+}
+
+resource "aws_security_group_rule" "this_outbound_853_udp" {
+  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+
+  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+
+  type        = "ingress"
+  from_port   = 853
+  to_port     = 853
+  protocol    = "udp"
+  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
+}
+
+locals {
+  // These must go away once the module is adapted from  0.11 to Terraform 0.12
+  this_outbound_ip_address1 = "${element(var.resolver_outbound_ip_addresses[0], 0)}"
+  this_outbound_ip_address2 = "${element(var.resolver_outbound_ip_addresses[0], 1)}"
+  this_outbound_subnet_id1  = "${element(var.resolver_outbound_subnet_ids[0], 0)}"
+  this_outbound_subnet_id2  = "${element(var.resolver_outbound_subnet_ids[0], 1)}"
+}
+
+resource "aws_route53_resolver_endpoint" "this_outbound" {
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
+
+  name      = "${element(var.resolver_outbound_names, count.index)}"
+  direction = "OUTBOUND"
+
+  security_group_ids = [
+    "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}",
+  ]
+
+  // This must be computed automatically when transforming 0.11 in 0.12
+  ip_address = {
+    ip        = "${local.this_outbound_ip_address1}"
+    subnet_id = "${local.this_outbound_subnet_id1}"
+  }
+
+  ip_address = {
+    ip        = "${local.this_outbound_ip_address2}"
+    subnet_id = "${local.this_outbound_subnet_id2}"
+  }
+
+  tags = "${merge(
+    map("Terraform", "true"),
+    map("Name", element(var.resolver_outbound_names, count.index)),
     var.tags,
     var.resolver_tags
   )}"
