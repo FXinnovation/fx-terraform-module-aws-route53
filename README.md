@@ -35,6 +35,10 @@ Limitations:
 
 | Name | Description |
 |------|-------------|
+| resolver\_inbound\_arns | ID of the security group shared with the INBOUND resolvers. |
+| resolver\_inbound\_host\_vpc\_ids | IDs of the host VPC of the the INBOUND resolvers. |
+| resolver\_inbound\_ids | ID of the security group shared with the INBOUND resolvers. |
+| resolver\_inbound\_security\_group\_id | ID of the security group shared with the INBOUND resolvers. |
 | zone\_private\_ids | IDs of the private hosted zones. |
 | zone\_public\_ids | IDs of the public hosted zones. |
 
