@@ -26,8 +26,7 @@ data "aws_subnet" "sub2" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block       = "10.1.1.0/24"
-  instance_tenancy = "dedicated"
+  cidr_block = "10.1.1.0/24"
 }
 
 resource "aws_vpc" "second" {
@@ -127,4 +126,6 @@ module "default" {
   rule_forward_tags = {
     Name = "${random_string.this.result}tftest"
   }
+  rule_forward_vpc_attachement_count = 2
+  rule_forward_vpc_attachement_ids   = ["${aws_vpc.main.id}", "${aws_vpc.second.id}"]
 }

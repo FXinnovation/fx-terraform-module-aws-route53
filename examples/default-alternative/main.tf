@@ -70,8 +70,8 @@ module "default_alternative" {
     "An private zone for ${random_string.this.result}.tftest2example.com",
     "An private zone for ${random_string.this.result}.tftest3example.com",
   ]
-  zone_private_vpc_attachement_count = 1
-  zone_private_vpc_attachement_ids   = ["${aws_vpc.main.id}"]
+  zone_private_vpc_attachement_count = 0
+  zone_private_vpc_attachement_ids   = []
   zone_tags = {
     Name = "${random_string.this.result}tftest"
   }
@@ -140,4 +140,41 @@ module "default_alternative" {
   }
   resolver_outbound_security_group_name          = "${random_string.this.result}outResolver"
   resolver_outbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+
+  #####
+  # Forward rules
+  #####
+
+  rule_forward_count = 2
+  rule_forward_domain_names = [
+    "${random_string.this.result}.tftest-rule-example.com",
+    "${random_string.this.result}.tftest2-rule-example.com",
+  ]
+  rule_forward_names = [
+    "${random_string.this.result}ruleForward",
+    "${random_string.this.result}ruleForward2",
+  ]
+  rule_forward_resolver_target_ips = {
+    "0" = [
+      {
+        ip = "123.45.67.89"
+      },
+      {
+        ip = "123.45.67.90"
+      },
+    ]
+
+    "1" = [
+      {
+        ip = "124.45.67.89"
+      },
+      {
+        ip = "124.45.67.90"
+      },
+    ]
+  }
+  rule_forward_tags = {
+    Name = "${random_string.this.result}tftest"
+  }
+  rule_forward_vpc_attachement_count = 0
 }
