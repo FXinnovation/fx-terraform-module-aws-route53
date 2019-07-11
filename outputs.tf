@@ -59,3 +59,27 @@ output "resolver_outbound_host_vpc_ids" {
   description = "IDs of the host VPC of the the OUTBOUND resolvers."
   value       = "${compact(concat(aws_route53_resolver_endpoint.this_outbound.*.host_vpc_id, list("")))}"
 }
+
+#####
+# Forward rules
+#####
+
+output "rule_forward_ids" {
+  description = "IDs of the resolver rules."
+  value       = "${compact(concat(aws_route53_resolver_rule.this_forward.*.id, list("")))}"
+}
+
+output "rule_forward_arns" {
+  description = "ARNs of the resolver rules."
+  value       = "${compact(concat(aws_route53_resolver_rule.this_forward.*.arn, list("")))}"
+}
+
+output "rule_forward_owner_ids" {
+  description = "When the rules are shared with other AWS accounts, the account IDs of the accounts that the rules are shared with."
+  value       = "${compact(concat(aws_route53_resolver_rule.this_forward.*.owner_id, list("")))}"
+}
+
+output "rule_forward_share_statuses" {
+  description = "Whether the rules are shared and, if so, whether the current account is sharing the rules with other accounts, or another account is sharing the rules with the current account. Values are NOT_SHARED, SHARED_BY_ME or SHARED_WITH_ME."
+  value       = "${compact(concat(aws_route53_resolver_rule.this_forward.*.share_status, list("")))}"
+}

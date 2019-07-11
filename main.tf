@@ -254,7 +254,7 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
 #####
 
 resource "aws_route53_resolver_rule" "this_forward" {
-  count = "${var.enable ? var.rule_forward_count : 0}"
+  count = "${var.enable && var.rule_forward_count > 0 ? var.rule_forward_count : 0}"
 
   domain_name          = "${element(var.rule_forward_domain_names, count.index)}"
   name                 = "${element(var.rule_forward_names, count.index)}"
@@ -273,10 +273,12 @@ resource "aws_route53_resolver_rule" "this_forward" {
   )}"
 }
 
-//resource "aws_route53_resolver_rule_association" "example" {
-//  resolver_rule_id = "${aws_route53_resolver_rule.sys.id}"
-//  vpc_id           = "${aws_vpc.foo.id}"
-//}
+resource "aws_route53_resolver_rule_association" "this_forward" {
+  count = "${var.enable && var.rule_forward_count > 0 ? (var.rule_forward_vpc_attachement_count + 1) * var.rule_forward_count : 0}"
+
+  resolver_rule_id = "${element(aws_route53_resolver_rule.this_forward.*.id, count.index % var.rule_forward_count)}"
+  vpc_id           = "${element(concat(list(var.vpc_id), var.rule_forward_vpc_attachement_ids), floor(count.index / var.rule_forward_count) % (var.rule_forward_vpc_attachement_count + 1))}"
+}
 
 #####
 # Records
