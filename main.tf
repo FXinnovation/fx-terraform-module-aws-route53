@@ -127,7 +127,7 @@ resource "aws_route53_resolver_endpoint" "this_inbound" {
   direction = "INBOUND"
 
   security_group_ids = [
-    "${aws_security_group.this_inbound.id}",
+    "${element(concat(aws_security_group.this_inbound.*.id, list("")), 0)}",
   ]
 
   // This must be computed automatically when transforming 0.11 in 0.12
