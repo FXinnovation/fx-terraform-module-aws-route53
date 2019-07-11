@@ -23,17 +23,17 @@ output "route53_resolver_inbound_host_vpc_ids" {
 }
 
 output "route53_resolver_outbound_security_group_id" {
-  value = "${module.default.zone_public_ids}"
+  value = "${module.default.resolver_outbound_security_group_id}"
 }
 
 output "route53_resolver_outbound_ids" {
-  value = "${module.default.zone_public_ids}"
+  value = "${module.default.resolver_outbound_ids}"
 }
 
 output "route53_resolver_outbound_arns" {
-  value = "${module.default.zone_public_ids}"
+  value = "${module.default.resolver_outbound_arns}"
 }
 
 output "route53_resolver_outbound_host_vpc_ids" {
-  value = "${module.default.zone_public_ids}"
+  value = "${module.default.resolver_outbound_host_vpc_ids}"
 }
