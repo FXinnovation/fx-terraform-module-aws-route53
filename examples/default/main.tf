@@ -94,14 +94,14 @@ module "default" {
   resolver_outbound_names = ["${random_string.this.result}outResolver"]
   resolver_outbound_ip_addresses = {
     "0" = [
+      "172.31.0.11",
       "172.31.16.11",
-      "172.31.32.11",
     ]
   }
   resolver_outbound_subnet_ids = {
     "0" = [
-      "${element(data.aws_subnet_ids.default.ids, 0)}",
-      "${element(data.aws_subnet_ids.default.ids, 1)}",
+      "${data.aws_subnet.sub1.id}",
+      "${data.aws_subnet.sub2.id}",
     ]
   }
   resolver_outbound_security_group_name          = "${random_string.this.result}outResolver"

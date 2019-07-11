@@ -117,22 +117,20 @@ module "default_alternative" {
   resolver_outbound_count = 2
   resolver_outbound_names = ["${random_string.this.result}outResolver"]
   resolver_outbound_ip_addresses = {
-    "0" = {
-      "0" = [
-        "172.31.16.11",
-        "172.31.32.11",
-      ]
+    "0" = [
+      "172.31.0.5",
+      "172.31.16.5",
+    ]
 
-      "1" = [
-        "10.1.1.11",
-        "10.1.2.11",
-      ]
-    }
+    "1" = [
+      "10.1.1.5",
+      "10.1.2.5",
+    ]
   }
   resolver_outbound_subnet_ids = {
     "0" = [
-      "${element(data.aws_subnet_ids.default.ids, 0)}",
-      "${element(data.aws_subnet_ids.default.ids, 1)}",
+      "${data.aws_subnet.sub1.id}",
+      "${data.aws_subnet.sub2.id}",
     ]
 
     "1" = [

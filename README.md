@@ -45,7 +45,6 @@ Limitations:
 | resolver\_inbound\_host\_vpc\_ids | IDs of the host VPC of the the INBOUND resolvers. |
 | resolver\_inbound\_ids | ID of the security group shared with the INBOUND resolvers. |
 | resolver\_inbound\_security\_group\_ids | IDs of the security group for the INBOUND resolvers. |
-| resolver\_inbound\_security\_group\_id | ID of the security group shared with the INBOUND resolvers. |
 | resolver\_outbound\_arns | ID of the security group shared with the OUTBOUND resolvers. |
 | resolver\_outbound\_host\_vpc\_ids | IDs of the host VPC of the the OUTBOUND resolvers. |
 | resolver\_outbound\_ids | ID of the security group shared with the OUTBOUND resolvers. |

@@ -151,12 +151,18 @@ resource "aws_route53_resolver_endpoint" "this_inbound" {
 # Resolver endpoints outbound
 #####
 
+data "aws_subnet" "this_outbound" {
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
+
+  id = "${element(var.resolver_outbound_subnet_ids[count.index], 0)}"
+}
+
 resource "aws_security_group" "this_outbound" {
-  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
 
   name        = "${var.resolver_outbound_security_group_name}"
   description = "Security group for outbound resolvers."
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = "${element(data.aws_subnet.this_outbound.*.vpc_id, count.index)}"
 
   tags = "${merge(
     map("Terraform", "true"),
@@ -167,9 +173,9 @@ resource "aws_security_group" "this_outbound" {
 }
 
 resource "aws_security_group_rule" "this_outbound_53_tcp" {
-  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
 
-  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
   type        = "ingress"
   from_port   = 53
@@ -179,9 +185,9 @@ resource "aws_security_group_rule" "this_outbound_53_tcp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_53_udp" {
-  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
 
-  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
   type        = "ingress"
   from_port   = 53
@@ -191,9 +197,9 @@ resource "aws_security_group_rule" "this_outbound_53_udp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_853_tcp" {
-  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
 
-  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
   type        = "ingress"
   from_port   = 853
@@ -203,23 +209,15 @@ resource "aws_security_group_rule" "this_outbound_853_tcp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_853_udp" {
-  count = "${var.enable && var.resolver_outbound_count > 0 ? 1 : 0}"
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
 
-  security_group_id = "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}"
+  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
   type        = "ingress"
   from_port   = 853
   to_port     = 853
   protocol    = "udp"
   cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
-}
-
-locals {
-  // These must go away once the module is adapted from  0.11 to Terraform 0.12
-  this_outbound_ip_address1 = "${element(var.resolver_outbound_ip_addresses[0], 0)}"
-  this_outbound_ip_address2 = "${element(var.resolver_outbound_ip_addresses[0], 1)}"
-  this_outbound_subnet_id1  = "${element(var.resolver_outbound_subnet_ids[0], 0)}"
-  this_outbound_subnet_id2  = "${element(var.resolver_outbound_subnet_ids[0], 1)}"
 }
 
 resource "aws_route53_resolver_endpoint" "this_outbound" {
@@ -229,18 +227,18 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
   direction = "OUTBOUND"
 
   security_group_ids = [
-    "${element(concat(aws_security_group.this_outbound.*.id, list("")), 0)}",
+    "${element(aws_security_group.this_outbound.*.id, count.index)}",
   ]
 
-  // This must be computed automatically when transforming 0.11 in 0.12
+  // This must be computed dynamically when transforming 0.11 in 0.12
   ip_address = {
-    ip        = "${local.this_outbound_ip_address1}"
-    subnet_id = "${local.this_outbound_subnet_id1}"
+    ip        = "${element(var.resolver_outbound_ip_addresses[count.index], 0)}"
+    subnet_id = "${element(var.resolver_outbound_subnet_ids[count.index], 0)}"
   }
 
   ip_address = {
-    ip        = "${local.this_outbound_ip_address2}"
-    subnet_id = "${local.this_outbound_subnet_id2}"
+    ip        = "${element(var.resolver_outbound_ip_addresses[count.index], 1)}"
+    subnet_id = "${element(var.resolver_outbound_subnet_ids[count.index], 1)}"
   }
 
   tags = "${merge(
