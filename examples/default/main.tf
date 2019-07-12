@@ -11,6 +11,13 @@ resource "random_string" "this" {
   special = false
 }
 
+resource "random_string" "num" {
+  length  = 2
+  upper   = false
+  lower   = false
+  special = false
+}
+
 data "aws_vpc" "default" {
   default = true
 }
@@ -72,8 +79,8 @@ module "default" {
   resolver_inbound_names = ["${random_string.this.result}inResolver"]
   resolver_inbound_ip_addresses = {
     "0" = [
-      "172.31.0.5",
-      "172.31.16.5",
+      "172.31.0.${random_string.num.result}",
+      "172.31.16.${random_string.num.result}",
     ]
   }
   resolver_inbound_subnet_ids = {
@@ -93,8 +100,8 @@ module "default" {
   resolver_outbound_names = ["${random_string.this.result}outResolver"]
   resolver_outbound_ip_addresses = {
     "0" = [
-      "172.31.0.11",
-      "172.31.16.11",
+      "172.31.1.${random_string.num.result}",
+      "172.31.17.${random_string.num.result}",
     ]
   }
   resolver_outbound_subnet_ids = {
@@ -116,10 +123,10 @@ module "default" {
   rule_forward_resolver_target_ips = {
     "0" = [
       {
-        ip = "123.45.67.89"
+        ip = "123.45.67.${random_string.num.result}"
       },
       {
-        ip = "123.45.67.90"
+        ip = "123.45.67.${random_string.num.result}"
       },
     ]
   }
