@@ -53,3 +53,11 @@ output "route53_rule_forward_owner_ids" {
 output "route53_rule_forward_share_statuses" {
   value = "${module.disable.rule_forward_share_statuses}"
 }
+
+output "route53_rule_forward_share_ids" {
+  value = "${module.disable.rule_forward_share_ids}"
+}
+
+output "route53_rule_forward_share_arns" {
+  value = "${module.disable.rule_forward_share_arns}"
+}
