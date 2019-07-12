@@ -77,7 +77,7 @@ module "default_alternative" {
   }
 
   #####
-  # Resolvers
+  # Resolvers inbound
   #####
 
   resolver_tags = {
@@ -109,4 +109,35 @@ module "default_alternative" {
   }
   resolver_inbound_security_group_name          = "${random_string.this.result}inResolver"
   resolver_inbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+
+  #####
+  # Resolvers outbound
+  #####
+
+  resolver_outbound_count = 2
+  resolver_outbound_names = ["${random_string.this.result}outResolver"]
+  resolver_outbound_ip_addresses = {
+    "0" = [
+      "172.31.0.5",
+      "172.31.16.5",
+    ]
+
+    "1" = [
+      "10.1.1.5",
+      "10.1.2.5",
+    ]
+  }
+  resolver_outbound_subnet_ids = {
+    "0" = [
+      "${data.aws_subnet.sub1.id}",
+      "${data.aws_subnet.sub2.id}",
+    ]
+
+    "1" = [
+      "${aws_subnet.main_sub1.id}",
+      "${aws_subnet.main_sub2.id}",
+    ]
+  }
+  resolver_outbound_security_group_name          = "${random_string.this.result}outResolver"
+  resolver_outbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
 }

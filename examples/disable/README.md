@@ -16,6 +16,10 @@
 | route53\_resolver\_inbound\_host\_vpc\_ids |  |
 | route53\_resolver\_inbound\_ids |  |
 | route53\_resolver\_inbound\_security\_group\_ids |  |
+| route53\_resolver\_outbound\_arns |  |
+| route53\_resolver\_outbound\_host\_vpc\_ids |  |
+| route53\_resolver\_outbound\_ids |  |
+| route53\_resolver\_outbound\_security\_group\_id |  |
 | route53\_zone\_private\_ids |  |
 | route53\_zone\_public\_ids |  |
 
