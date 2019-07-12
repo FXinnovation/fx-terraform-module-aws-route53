@@ -5,6 +5,8 @@ This module is not to be deployed directly.
 Limitations:
 - All resolvers of the same type shares the same security group rules.
 - All resolvers must have an exact number of 2 IPs. This cannot be worked around in Terraform 0.11.
+- There is no way to auto accept resource shares with the aws provider 2.18.
+That’s why the resource shares created with this module must be accepted manually on receiving accounts.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
