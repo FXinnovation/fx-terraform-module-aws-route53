@@ -184,4 +184,16 @@ module "default_alternative" {
     Name = "${random_string.this.result}tftest"
   }
   rule_forward_vpc_attachement_count = 0
+
+  #####
+  # Resource share
+  #####
+
+  rule_forward_share_indexes = [0, 1]
+  rule_forward_share_names   = ["${random_string.this.result}resShare1", "${random_string.this.result}resShare2"]
+  rule_forward_share_tags = {
+    Name = "${random_string.this.result}tftest"
+  }
+  rule_forward_share_principal_count = 1
+  rule_forward_share_principals      = ["203977111394"]
 }
