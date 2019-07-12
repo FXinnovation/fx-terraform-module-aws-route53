@@ -83,3 +83,17 @@ output "rule_forward_share_statuses" {
   description = "Whether the rules are shared and, if so, whether the current account is sharing the rules with other accounts, or another account is sharing the rules with the current account. Values are NOT_SHARED, SHARED_BY_ME or SHARED_WITH_ME."
   value       = "${compact(concat(aws_route53_resolver_rule.this_forward.*.share_status, list("")))}"
 }
+
+#####
+# Resource share
+#####
+
+output "rule_forward_share_ids" {
+  description = "IDs of the resource shares for the resolver forward rules."
+  value       = "${compact(concat(aws_ram_resource_share.this_forward.*.id, list("")))}"
+}
+
+output "rule_forward_share_arns" {
+  description = "ARNs of the resource shares for the resolver forward rules."
+  value       = "${compact(concat(aws_ram_resource_share.this_forward.*.arn, list("")))}"
+}

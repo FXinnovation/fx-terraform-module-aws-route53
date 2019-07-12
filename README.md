@@ -67,6 +67,8 @@ That’s why the resource shares created with this module must be accepted manua
 | rule\_forward\_arns | ARNs of the resolver rules. |
 | rule\_forward\_ids | IDs of the resolver rules. |
 | rule\_forward\_owner\_ids | When the rules are shared with other AWS accounts, the account IDs of the accounts that the rules are shared with. |
+| rule\_forward\_share\_arns | ARNs of the resource shares for the resolver forward rules. |
+| rule\_forward\_share\_ids | IDs of the resource shares for the resolver forward rules. |
 | rule\_forward\_share\_statuses | Whether the rules are shared and, if so, whether the current account is sharing the rules with other accounts, or another account is sharing the rules with the current account. Values are NOT_SHARED, SHARED_BY_ME or SHARED_WITH_ME. |
 | zone\_private\_ids | IDs of the private hosted zones. |
 | zone\_public\_ids | IDs of the public hosted zones. |
