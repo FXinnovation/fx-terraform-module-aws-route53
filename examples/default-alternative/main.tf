@@ -38,12 +38,12 @@ resource "aws_vpc" "main" {
 
 resource "aws_subnet" "main_sub1" {
   vpc_id     = "${aws_vpc.main.id}"
-  cidr_block = "10.1.1.0/20"
+  cidr_block = "10.1.0.0/20"
 }
 
 resource "aws_subnet" "main_sub2" {
   vpc_id     = "${aws_vpc.main.id}"
-  cidr_block = "10.1.2.0/20"
+  cidr_block = "10.1.16.0/20"
 }
 
 module "default_alternative" {
