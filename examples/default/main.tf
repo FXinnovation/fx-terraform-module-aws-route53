@@ -123,10 +123,10 @@ module "default" {
   rule_forward_resolver_target_ips = {
     "0" = [
       {
-        ip = "123.45.67.${random_string.num.result}"
+        ip = "123.45.67.5"
       },
       {
-        ip = "123.45.67.${random_string.num.result}"
+        ip = "123.45.68.5"
       },
     ]
   }
