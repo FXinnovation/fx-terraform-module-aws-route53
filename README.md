@@ -30,6 +30,11 @@ Limitations:
 | rule\_forward\_names | Names of the resolvers forward rules to be created in the module. Friendly names that lets you easily find a rule in the Resolver dashboard in the Route 53 console. | list | `[]` | no |
 | rule\_forward\_resolver\_endpoint\_ids | IDs of the resolver endpoints to be used for the resolver forward rules. If not specify, the first OUBOUND resolver created by this module will be used for all the rules. | list | `[]` | no |
 | rule\_forward\_resolver\_target\_ips | Object of lists of objects containing target IPs for the resolver forward rules. IPs that you want resolvers to forward DNS queries to. Look at examples for correct usage. | map | `{}` | no |
+| rule\_forward\_share\_indexes | Indexes of the forward rules to be shared with other principals (rule_forward_share_principals). See examples for correct usage. | list | `[]` | no |
+| rule\_forward\_share\_names | Names of the resource shares resolvers for forward rules to be created in the module. | list | `[]` | no |
+| rule\_forward\_share\_principal\_count | How many accounts must receive the resource shares for forward rules to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
+| rule\_forward\_share\_principals | IDs of the accounts that must receive the resource shares for forward rules to be created in the module. | list | `[]` | no |
+| rule\_forward\_share\_tags | Tags specific to the resource shares for the forward rules to be created in the module. Will be merged with tags. | map | `{}` | no |
 | rule\_forward\_tags | Tags specific to the resolvers forward rules to be created in the module. Will be merged with tags. | map | `{}` | no |
 | rule\_forward\_vpc\_attachement\_count | How many resolver forward rule attachments should be created in the module. This should not contain the current VPC. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | rule\_forward\_vpc\_attachement\_ids | IDs of the VPC to be attached to the resolver forward rules of this module. This should not contain the current VPC as it will be attached automatically. | list | `[]` | no |
