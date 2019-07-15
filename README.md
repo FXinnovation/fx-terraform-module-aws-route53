@@ -38,8 +38,8 @@ That’s why the resource shares created with this module must be accepted manua
 | rule\_forward\_share\_principals | IDs of the accounts that must receive the resource shares for forward rules to be created in the module. | list | `[]` | no |
 | rule\_forward\_share\_tags | Tags specific to the resource shares for the forward rules to be created in the module. Will be merged with tags. | map | `{}` | no |
 | rule\_forward\_tags | Tags specific to the resolvers forward rules to be created in the module. Will be merged with tags. | map | `{}` | no |
-| rule\_forward\_vpc\_attachement\_count | How many resolver forward rule attachments should be created in the module. This should not contain the current VPC. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
-| rule\_forward\_vpc\_attachement\_ids | IDs of the VPC to be attached to the resolver forward rules of this module. This should not contain the current VPC as it will be attached automatically. | list | `[]` | no |
+| rule\_forward\_vpc\_attachement\_count | How many resolver forward rule attachments should be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
+| rule\_forward\_vpc\_attachement\_ids | IDs of the VPC to be attached to the resolver forward rules of this module. | list | `[]` | no |
 | tags | Tags to be shared among all resources of this module. | map | `{}` | no |
 | vpc\_id | ID of the VPC where to create resources for this module. | string | `""` | no |
 | zone\_private\_comments | Comments of private hosted zones to be created in the module. | list | `[]` | no |

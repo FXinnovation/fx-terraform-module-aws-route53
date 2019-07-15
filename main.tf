@@ -274,10 +274,10 @@ resource "aws_route53_resolver_rule" "this_forward" {
 }
 
 resource "aws_route53_resolver_rule_association" "this_forward" {
-  count = "${var.enable && var.rule_forward_count > 0 ? (var.rule_forward_vpc_attachement_count + 1) * var.rule_forward_count : 0}"
+  count = "${var.enable && var.rule_forward_count > 0 ? var.rule_forward_vpc_attachement_count * var.rule_forward_count : 0}"
 
   resolver_rule_id = "${element(aws_route53_resolver_rule.this_forward.*.id, count.index % var.rule_forward_count)}"
-  vpc_id           = "${element(concat(list(var.vpc_id), var.rule_forward_vpc_attachement_ids), floor(count.index / var.rule_forward_count) % (var.rule_forward_vpc_attachement_count + 1))}"
+  vpc_id           = "${element(concat(var.rule_forward_vpc_attachement_ids), floor(count.index / var.rule_forward_count) % var.rule_forward_vpc_attachement_count)}"
 }
 
 #####

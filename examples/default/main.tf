@@ -131,6 +131,6 @@ module "default" {
   rule_forward_tags = {
     Name = "${random_string.this.result}tftest"
   }
-  rule_forward_vpc_attachement_count = 2
-  rule_forward_vpc_attachement_ids   = ["${aws_vpc.main.id}", "${aws_vpc.second.id}"]
+  rule_forward_vpc_attachement_count = 3
+  rule_forward_vpc_attachement_ids   = ["${data.aws_vpc.default.id}", "${aws_vpc.main.id}", "${aws_vpc.second.id}"]
 }
