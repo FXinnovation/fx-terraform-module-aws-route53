@@ -37,3 +37,19 @@ output "route53_resolver_outbound_arns" {
 output "route53_resolver_outbound_host_vpc_ids" {
   value = "${module.default_alternative.resolver_outbound_host_vpc_ids}"
 }
+
+output "route53_rule_forward_ids" {
+  value = "${module.default_alternative.rule_forward_ids}"
+}
+
+output "route53_rule_forward_arns" {
+  value = "${module.default_alternative.rule_forward_arns}"
+}
+
+output "route53_rule_forward_owner_ids" {
+  value = "${module.default_alternative.rule_forward_owner_ids}"
+}
+
+output "route53_rule_forward_share_statuses" {
+  value = "${module.default_alternative.rule_forward_share_statuses}"
+}

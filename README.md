@@ -25,6 +25,14 @@ Limitations:
 | resolver\_outbound\_security\_group\_name | Name of the security groups shared for OUTBOUND resolvers. | string | `"outbound-resolver"` | no |
 | resolver\_outbound\_subnet\_ids | Object of lists containing the subnet IDs corresponding to the IP addresses for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_tags | Tags specific to the resolvers to be created in the module. Will be merged with tags. | map | `{}` | no |
+| rule\_forward\_count | How many resolvers forward rules to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
+| rule\_forward\_domain\_names | Domain names of the resolvers forward rules to be created in the module. DNS queries for these domain names are forwarded to the IP addresses that are specified using target_ip. | list | `[]` | no |
+| rule\_forward\_names | Names of the resolvers forward rules to be created in the module. Friendly names that lets you easily find a rule in the Resolver dashboard in the Route 53 console. | list | `[]` | no |
+| rule\_forward\_resolver\_endpoint\_ids | IDs of the resolver endpoints to be used for the resolver forward rules. If not specify, the first OUBOUND resolver created by this module will be used for all the rules. | list | `[]` | no |
+| rule\_forward\_resolver\_target\_ips | Object of lists of objects containing target IPs for the resolver forward rules. IPs that you want resolvers to forward DNS queries to. Look at examples for correct usage. | map | `{}` | no |
+| rule\_forward\_tags | Tags specific to the resolvers forward rules to be created in the module. Will be merged with tags. | map | `{}` | no |
+| rule\_forward\_vpc\_attachement\_count | How many resolver forward rule attachments should be created in the module. This should not contain the current VPC. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
+| rule\_forward\_vpc\_attachement\_ids | IDs of the VPC to be attached to the resolver forward rules of this module. This should not contain the current VPC as it will be attached automatically. | list | `[]` | no |
 | tags | Tags to be shared among all resources of this module. | map | `{}` | no |
 | vpc\_id | ID of the VPC where to create resources for this module. | string | `""` | no |
 | zone\_private\_comments | Comments of private hosted zones to be created in the module. | list | `[]` | no |
@@ -49,6 +57,10 @@ Limitations:
 | resolver\_outbound\_host\_vpc\_ids | IDs of the host VPC of the the OUTBOUND resolvers. |
 | resolver\_outbound\_ids | ID of the security group shared with the OUTBOUND resolvers. |
 | resolver\_outbound\_security\_group\_id | ID of the security group shared with the OUTBOUND resolvers. |
+| rule\_forward\_arns | ARNs of the resolver rules. |
+| rule\_forward\_ids | IDs of the resolver rules. |
+| rule\_forward\_owner\_ids | When the rules are shared with other AWS accounts, the account IDs of the accounts that the rules are shared with. |
+| rule\_forward\_share\_statuses | Whether the rules are shared and, if so, whether the current account is sharing the rules with other accounts, or another account is sharing the rules with the current account. Values are NOT_SHARED, SHARED_BY_ME or SHARED_WITH_ME. |
 | zone\_private\_ids | IDs of the private hosted zones. |
 | zone\_public\_ids | IDs of the public hosted zones. |
 

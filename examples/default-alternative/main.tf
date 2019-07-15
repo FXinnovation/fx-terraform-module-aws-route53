@@ -11,6 +11,13 @@ resource "random_string" "this" {
   special = false
 }
 
+resource "random_string" "num" {
+  length  = 2
+  upper   = false
+  lower   = false
+  special = false
+}
+
 data "aws_vpc" "default" {
   default = true
 }
@@ -31,12 +38,12 @@ resource "aws_vpc" "main" {
 
 resource "aws_subnet" "main_sub1" {
   vpc_id     = "${aws_vpc.main.id}"
-  cidr_block = "10.1.1.0/24"
+  cidr_block = "10.1.0.0/20"
 }
 
 resource "aws_subnet" "main_sub2" {
   vpc_id     = "${aws_vpc.main.id}"
-  cidr_block = "10.1.2.0/24"
+  cidr_block = "10.1.16.0/20"
 }
 
 module "default_alternative" {
@@ -70,8 +77,8 @@ module "default_alternative" {
     "An private zone for ${random_string.this.result}.tftest2example.com",
     "An private zone for ${random_string.this.result}.tftest3example.com",
   ]
-  zone_private_vpc_attachement_count = 1
-  zone_private_vpc_attachement_ids   = ["${aws_vpc.main.id}"]
+  zone_private_vpc_attachement_count = 0
+  zone_private_vpc_attachement_ids   = []
   zone_tags = {
     Name = "${random_string.this.result}tftest"
   }
@@ -87,13 +94,13 @@ module "default_alternative" {
   resolver_inbound_names = ["${random_string.this.result}inResolver1", "${random_string.this.result}inResolver2"]
   resolver_inbound_ip_addresses = {
     "0" = [
-      "172.31.0.5",
-      "172.31.16.5",
+      "172.31.0.${random_string.num.result}",
+      "172.31.16.${random_string.num.result}",
     ]
 
     "1" = [
-      "10.1.1.5",
-      "10.1.2.5",
+      "10.1.0.${random_string.num.result}",
+      "10.1.16.${random_string.num.result}",
     ]
   }
   resolver_inbound_subnet_ids = {
@@ -118,13 +125,13 @@ module "default_alternative" {
   resolver_outbound_names = ["${random_string.this.result}outResolver"]
   resolver_outbound_ip_addresses = {
     "0" = [
-      "172.31.0.5",
-      "172.31.16.5",
+      "172.31.1.${random_string.num.result}",
+      "172.31.17.${random_string.num.result}",
     ]
 
     "1" = [
-      "10.1.1.5",
-      "10.1.2.5",
+      "10.1.1.${random_string.num.result}",
+      "10.1.17.${random_string.num.result}",
     ]
   }
   resolver_outbound_subnet_ids = {
@@ -140,4 +147,41 @@ module "default_alternative" {
   }
   resolver_outbound_security_group_name          = "${random_string.this.result}outResolver"
   resolver_outbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+
+  #####
+  # Forward rules
+  #####
+
+  rule_forward_count = 2
+  rule_forward_domain_names = [
+    "${random_string.this.result}.tftest-rule-example.com",
+    "${random_string.this.result}.tftest2-rule-example.com",
+  ]
+  rule_forward_names = [
+    "${random_string.this.result}ruleForward",
+    "${random_string.this.result}ruleForward2",
+  ]
+  rule_forward_resolver_target_ips = {
+    "0" = [
+      {
+        ip = "123.45.1.10"
+      },
+      {
+        ip = "123.45.1.16"
+      },
+    ]
+
+    "1" = [
+      {
+        ip = "123.45.2.10"
+      },
+      {
+        ip = "123.45.2.16"
+      },
+    ]
+  }
+  rule_forward_tags = {
+    Name = "${random_string.this.result}tftest"
+  }
+  rule_forward_vpc_attachement_count = 0
 }
