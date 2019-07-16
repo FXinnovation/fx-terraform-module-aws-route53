@@ -35,6 +35,8 @@ Note that this example may create resources which can cost money (AWS Elastic IP
 | route53\_rule\_forward\_arns |  |
 | route53\_rule\_forward\_ids |  |
 | route53\_rule\_forward\_owner\_ids |  |
+| route53\_rule\_forward\_share\_arns |  |
+| route53\_rule\_forward\_share\_ids |  |
 | route53\_rule\_forward\_share\_statuses |  |
 | route53\_zone\_private\_ids |  |
 | route53\_zone\_public\_ids |  |

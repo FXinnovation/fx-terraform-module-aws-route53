@@ -3,6 +3,11 @@ provider "aws" {
   region     = "eu-west-2"
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
+
+  assume_role {
+    role_arn     = "arn:aws:iam::700633540182:role/OrganizationAccountAccessRole"
+    session_name = "TfTest"
+  }
 }
 
 resource "random_string" "this" {
@@ -11,11 +16,9 @@ resource "random_string" "this" {
   special = false
 }
 
-resource "random_string" "num" {
-  length  = 2
-  upper   = false
-  lower   = false
-  special = false
+resource "random_integer" "this" {
+  min = 1
+  max = 254
 }
 
 data "aws_vpc" "default" {
@@ -94,13 +97,13 @@ module "default_alternative" {
   resolver_inbound_names = ["${random_string.this.result}inResolver1", "${random_string.this.result}inResolver2"]
   resolver_inbound_ip_addresses = {
     "0" = [
-      "172.31.0.${random_string.num.result}",
-      "172.31.16.${random_string.num.result}",
+      "${format("172.31.0.%s", random_integer.this.result)}",
+      "${format("172.31.16.%s", random_integer.this.result)}",
     ]
 
     "1" = [
-      "10.1.0.${random_string.num.result}",
-      "10.1.16.${random_string.num.result}",
+      "${format("10.1.0.%s", random_integer.this.result)}",
+      "${format("10.1.16.%s", random_integer.this.result)}",
     ]
   }
   resolver_inbound_subnet_ids = {
@@ -125,13 +128,13 @@ module "default_alternative" {
   resolver_outbound_names = ["${random_string.this.result}outResolver"]
   resolver_outbound_ip_addresses = {
     "0" = [
-      "172.31.1.${random_string.num.result}",
-      "172.31.17.${random_string.num.result}",
+      "${format("172.31.1.%s", random_integer.this.result)}",
+      "${format("172.31.17.%s", random_integer.this.result)}",
     ]
 
     "1" = [
-      "10.1.1.${random_string.num.result}",
-      "10.1.17.${random_string.num.result}",
+      "${format("10.1.1.%s", random_integer.this.result)}",
+      "${format("10.1.17.%s", random_integer.this.result)}",
     ]
   }
   resolver_outbound_subnet_ids = {
@@ -184,4 +187,16 @@ module "default_alternative" {
     Name = "${random_string.this.result}tftest"
   }
   rule_forward_vpc_attachement_count = 0
+
+  #####
+  # Resource share
+  #####
+
+  rule_forward_share_indexes = [0]
+  rule_forward_share_names   = ["${random_string.this.result}resShare1"]
+  rule_forward_share_tags = {
+    Name = "${random_string.this.result}tftest"
+  }
+  rule_forward_share_principal_count = 1
+  rule_forward_share_principals      = ["203977111394"]
 }

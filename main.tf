@@ -274,10 +274,42 @@ resource "aws_route53_resolver_rule" "this_forward" {
 }
 
 resource "aws_route53_resolver_rule_association" "this_forward" {
-  count = "${var.enable && var.rule_forward_count > 0 ? (var.rule_forward_vpc_attachement_count + 1) * var.rule_forward_count : 0}"
+  count = "${var.enable && var.rule_forward_count > 0 ? var.rule_forward_vpc_attachement_count * var.rule_forward_count : 0}"
 
   resolver_rule_id = "${element(aws_route53_resolver_rule.this_forward.*.id, count.index % var.rule_forward_count)}"
-  vpc_id           = "${element(concat(list(var.vpc_id), var.rule_forward_vpc_attachement_ids), floor(count.index / var.rule_forward_count) % (var.rule_forward_vpc_attachement_count + 1))}"
+  vpc_id           = "${element(concat(var.rule_forward_vpc_attachement_ids), floor(count.index / var.rule_forward_count) % var.rule_forward_vpc_attachement_count)}"
+}
+
+#####
+# Resource share
+#####
+
+resource "aws_ram_resource_share" "this_forward" {
+  count = "${var.enable && length(var.rule_forward_share_indexes) > 0 ? length(var.rule_forward_share_indexes) : 0}"
+
+  name                      = "${element(var.rule_forward_share_names, count.index)}"
+  allow_external_principals = true
+
+  tags = "${merge(
+    map("Terraform", "true"),
+    map("Name", element(var.rule_forward_share_names, count.index)),
+    var.tags,
+    var.rule_forward_share_tags
+  )}"
+}
+
+resource "aws_ram_resource_association" "this_forward" {
+  count = "${var.enable && length(var.rule_forward_share_indexes) > 0 ? length(var.rule_forward_share_indexes) : 0}"
+
+  resource_arn       = "${element(aws_route53_resolver_rule.this_forward.*.arn, element(var.rule_forward_share_indexes, count.index))}"
+  resource_share_arn = "${element(aws_ram_resource_share.this_forward.*.arn, count.index)}"
+}
+
+resource "aws_ram_principal_association" "this_forward" {
+  count = "${var.enable && length(var.rule_forward_share_indexes) > 0 && var.rule_forward_share_principal_count > 0 ? var.rule_forward_share_principal_count : 0}"
+
+  principal          = "${element(var.rule_forward_share_principals, count.index)}"
+  resource_share_arn = "${element(aws_ram_resource_share.this_forward.*.arn, count.index)}"
 }
 
 #####
