@@ -254,7 +254,7 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
 #####
 
 resource "aws_route53_resolver_rule" "this_forward" {
-  count = "${var.enable && var.rule_forward_count > 0 ? var.rule_forward_count : 0}"
+  count = "${var.enable && var.rule_forward_count > 0 && length(var.rule_forward_domain_names) > 0 ? var.rule_forward_count : 0}"
 
   domain_name          = "${element(var.rule_forward_domain_names, count.index)}"
   name                 = "${element(var.rule_forward_names, count.index)}"
@@ -276,7 +276,7 @@ resource "aws_route53_resolver_rule" "this_forward" {
 resource "aws_route53_resolver_rule_association" "this_forward" {
   count = "${var.enable && var.rule_forward_count > 0 ? var.rule_forward_vpc_attachement_count * var.rule_forward_count : 0}"
 
-  resolver_rule_id = "${element(aws_route53_resolver_rule.this_forward.*.id, count.index % var.rule_forward_count)}"
+  resolver_rule_id = "${element(concat(var.rule_forward_attachement_ids, list("")), 0) == "" ? element(concat(aws_route53_resolver_rule.this_forward.*.id, list("")), count.index % var.rule_forward_count) : element(concat(var.rule_forward_attachement_ids, list("")), count.index % var.rule_forward_count)}"
   vpc_id           = "${element(concat(var.rule_forward_vpc_attachement_ids), floor(count.index / var.rule_forward_count) % var.rule_forward_vpc_attachement_count)}"
 }
 

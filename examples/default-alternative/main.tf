@@ -200,3 +200,12 @@ module "default_alternative" {
   rule_forward_share_principal_count = 1
   rule_forward_share_principals      = ["203977111394"]
 }
+
+module "default_alternative2" {
+  source = "../../"
+
+  rule_forward_count                 = 2
+  rule_forward_attachement_ids       = ["${module.default_alternative.rule_forward_ids}"]
+  rule_forward_vpc_attachement_count = 1
+  rule_forward_vpc_attachement_ids   = ["${data.aws_vpc.default.id}"]
+}
