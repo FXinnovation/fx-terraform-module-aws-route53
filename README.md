@@ -14,6 +14,17 @@ That’s why the resource shares created with this module must be accepted manua
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | enable | Whether or not to enable this entire module or not. | string | `"true"` | no |
+| record\_alias\_dns\_names | DNS domain names for a CloudFront distribution, S3 bucket, ELB, or another resource record for the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_domain\_names | Domain names of the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_evaluate\_healths | Whether or not to evaluate the health of each alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_types | Types (valid values are A, AAAA, CAA, CNAME, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT) of the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_zone\_id | Hosted zone ID for a CloudFront distribution, S3 bucket, ELB, or Route 53 hosted zones for the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_zone\_indexes | Indexes of the zone ids (merge of the private & public zones created by this module - in this order) to bind with specific alias records. Must have the same number of element than: var.record_alias_domain_names, var.record_alias_types, etc. | list | `[]` | no |
+| record\_domain\_names | Domain names of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_records | List of string lists of recordsDomain names for the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_ttls | Domain names of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_types | Types (valid values are A, AAAA, CAA, CNAME, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT) of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_zone\_indexes | Indexes of the zone ids (merge of the private & public zones created by this module - in this order) to bind with specific records. Must have the same number of element than: var.record_domain_names, var.record_types, etc. | list | `[]` | no |
 | resolver\_inbound\_count | How many INBOUND resolvers to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | resolver\_inbound\_ip\_addresses | Object of lists containing the IP addresses corresponding to the subnet IDs for the INBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_inbound\_names | Names of the INBOUND resolvers to be created in the module. | list | `[]` | no |
