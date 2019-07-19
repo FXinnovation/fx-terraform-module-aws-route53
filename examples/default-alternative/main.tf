@@ -49,6 +49,18 @@ resource "aws_subnet" "main_sub2" {
   cidr_block = "10.1.16.0/20"
 }
 
+resource "aws_elb" "main" {
+  name               = "${random_string.this.result}tftest"
+  availability_zones = ["eu-west-2b"]
+
+  listener {
+    instance_port     = 80
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
+  }
+}
+
 module "default_alternative" {
   source = "../../"
 
@@ -199,4 +211,27 @@ module "default_alternative" {
   }
   rule_forward_share_principal_count = 1
   rule_forward_share_principals      = ["203977111394"]
+
+  #####
+  # Records alias
+  #####
+
+  record_alias_zone_indexes = [2]
+  record_alias_domain_names = [
+    "record.${random_string.this.result}tftest3example.com",
+  ]
+  record_alias_types            = ["A"]
+  record_alias_dns_names        = ["${aws_elb.main.dns_name}"]
+  record_alias_zone_id          = ["${aws_elb.main.zone_id}"]
+  record_alias_evaluate_healths = [true]
+}
+
+module "default_alternative2" {
+  source = "../../"
+
+  rule_forward_count                 = 2
+  rule_forward_attachement_ids_count = 1
+  rule_forward_attachement_ids       = ["${module.default_alternative.rule_forward_ids}"]
+  rule_forward_vpc_attachement_count = 1
+  rule_forward_vpc_attachement_ids   = ["${data.aws_vpc.default.id}"]
 }

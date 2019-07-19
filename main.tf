@@ -254,7 +254,7 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
 #####
 
 resource "aws_route53_resolver_rule" "this_forward" {
-  count = "${var.enable && var.rule_forward_count > 0 ? var.rule_forward_count : 0}"
+  count = "${var.enable && var.rule_forward_count > 0 && var.rule_forward_attachement_ids_count == 0 ? var.rule_forward_count : 0}"
 
   domain_name          = "${element(var.rule_forward_domain_names, count.index)}"
   name                 = "${element(var.rule_forward_names, count.index)}"
@@ -276,7 +276,7 @@ resource "aws_route53_resolver_rule" "this_forward" {
 resource "aws_route53_resolver_rule_association" "this_forward" {
   count = "${var.enable && var.rule_forward_count > 0 ? var.rule_forward_vpc_attachement_count * var.rule_forward_count : 0}"
 
-  resolver_rule_id = "${element(aws_route53_resolver_rule.this_forward.*.id, count.index % var.rule_forward_count)}"
+  resolver_rule_id = "${element(concat(var.rule_forward_attachement_ids, list("")), 0) == "" ? element(concat(aws_route53_resolver_rule.this_forward.*.id, list("")), count.index % var.rule_forward_count) : element(concat(var.rule_forward_attachement_ids, list("")), count.index % var.rule_forward_count)}"
   vpc_id           = "${element(concat(var.rule_forward_vpc_attachement_ids), floor(count.index / var.rule_forward_count) % var.rule_forward_vpc_attachement_count)}"
 }
 
@@ -319,4 +319,30 @@ resource "aws_ram_principal_association" "this_forward" {
 locals {
   zone_ids   = "${compact(concat(aws_route53_zone.this_private.*.zone_id, aws_route53_zone.this_public.*.zone_id))}"
   zone_names = "${compact(concat(aws_route53_zone.this_private.*.name, aws_route53_zone.this_public.*.name))}"
+}
+
+resource "aws_route53_record" "this" {
+  count = "${var.enable && length(var.record_zone_indexes) > 0 ? length(var.record_zone_indexes) : 0}"
+
+  zone_id         = "${element(concat(local.zone_ids, list("")), element(var.record_zone_indexes, count.index))}"
+  name            = "${element(concat(var.record_domain_names, list("")), count.index)}"
+  type            = "${element(concat(var.record_types, list("")), count.index)}"
+  ttl             = "${element(concat(var.record_ttls, list("")), count.index)}"
+  records         = ["${var.record_records[count.index]}"]
+  allow_overwrite = true
+}
+
+resource "aws_route53_record" "this_alias" {
+  count = "${var.enable && length(var.record_alias_zone_indexes) > 0 ? length(var.record_alias_zone_indexes) : 0}"
+
+  zone_id         = "${element(concat(local.zone_ids, list("")), element(concat(var.record_alias_zone_indexes, list("")), count.index))}"
+  name            = "${element(concat(var.record_alias_domain_names, list("")), element(var.record_alias_zone_indexes, count.index))}"
+  type            = "${element(concat(var.record_alias_types, list("")), count.index)}"
+  allow_overwrite = true
+
+  alias {
+    name                   = "${element(concat(var.record_alias_dns_names, list("")), count.index)}"
+    zone_id                = "${element(concat(var.record_alias_zone_id, list("")), count.index)}"
+    evaluate_target_health = "${element(concat(var.record_alias_evaluate_healths, list("")), count.index)}"
+  }
 }

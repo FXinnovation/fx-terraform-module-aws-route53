@@ -61,3 +61,11 @@ output "route53_rule_forward_share_ids" {
 output "route53_rule_forward_share_arns" {
   value = "${module.default_alternative.rule_forward_share_arns}"
 }
+
+output "record_names" {
+  value = "${module.default_alternative.record_names}"
+}
+
+output "record_fqdns" {
+  value = "${module.default_alternative.record_fqdns}"
+}

@@ -14,6 +14,17 @@ That’s why the resource shares created with this module must be accepted manua
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | enable | Whether or not to enable this entire module or not. | string | `"true"` | no |
+| record\_alias\_dns\_names | DNS domain names for a CloudFront distribution, S3 bucket, ELB, or another resource record for the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_domain\_names | Domain names of the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_evaluate\_healths | Whether or not to evaluate the health of each alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_types | Types (valid values are A, AAAA, CAA, CNAME, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT) of the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_zone\_id | Hosted zone ID for a CloudFront distribution, S3 bucket, ELB, or Route 53 hosted zones for the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_alias\_zone\_indexes | Indexes of the zone ids (merge of the private & public zones created by this module - in this order) to bind with specific alias records. Must have the same number of element than: var.record_alias_domain_names, var.record_alias_types, etc. | list | `[]` | no |
+| record\_domain\_names | Domain names of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_records | Object of string lists of recordsDomain names for the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. See example for proper usage. | map | `{}` | no |
+| record\_ttls | Domain names of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_types | Types (valid values are A, AAAA, CAA, CNAME, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT) of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. | list | `[]` | no |
+| record\_zone\_indexes | Indexes of the zone ids (merge of the private & public zones created by this module - in this order) to bind with specific records. Must have the same number of element than: var.record_domain_names, var.record_types, etc. | list | `[]` | no |
 | resolver\_inbound\_count | How many INBOUND resolvers to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | resolver\_inbound\_ip\_addresses | Object of lists containing the IP addresses corresponding to the subnet IDs for the INBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_inbound\_names | Names of the INBOUND resolvers to be created in the module. | list | `[]` | no |
@@ -27,6 +38,8 @@ That’s why the resource shares created with this module must be accepted manua
 | resolver\_outbound\_security\_group\_name | Name of the security groups shared for OUTBOUND resolvers. | string | `"outbound-resolver"` | no |
 | resolver\_outbound\_subnet\_ids | Object of lists containing the subnet IDs corresponding to the IP addresses for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_tags | Tags specific to the resolvers to be created in the module. Will be merged with tags. | map | `{}` | no |
+| rule\_forward\_attachement\_ids | IDs of the forward resolver rules that should be attached to the rule_forward_vpc_attachement_ids. If not specify, the forward rules created by this module will be used for all the attachments. | list | `[]` | no |
+| rule\_forward\_attachement\_ids\_count | How many var.rule_forward_attachement_ids. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | rule\_forward\_count | How many resolvers forward rules to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | rule\_forward\_domain\_names | Domain names of the resolvers forward rules to be created in the module. DNS queries for these domain names are forwarded to the IP addresses that are specified using target_ip. | list | `[]` | no |
 | rule\_forward\_names | Names of the resolvers forward rules to be created in the module. Friendly names that lets you easily find a rule in the Resolver dashboard in the Route 53 console. | list | `[]` | no |
@@ -56,6 +69,8 @@ That’s why the resource shares created with this module must be accepted manua
 
 | Name | Description |
 |------|-------------|
+| record\_fqdns | FQDNs built using the zone domains and names of the records. |
+| record\_names | Names of the records. |
 | resolver\_inbound\_arns | ID of the security group shared with the INBOUND resolvers. |
 | resolver\_inbound\_host\_vpc\_ids | IDs of the host VPC of the the INBOUND resolvers. |
 | resolver\_inbound\_ids | ID of the security group shared with the INBOUND resolvers. |

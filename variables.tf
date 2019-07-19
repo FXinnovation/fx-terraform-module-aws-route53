@@ -173,6 +173,16 @@ variable "rule_forward_tags" {
   default     = {}
 }
 
+variable "rule_forward_attachement_ids_count" {
+  description = "How many var.rule_forward_attachement_ids. This value cannot be computed automatically in Terraform 0.11."
+  default     = 0
+}
+
+variable "rule_forward_attachement_ids" {
+  description = "IDs of the forward resolver rules that should be attached to the rule_forward_vpc_attachement_ids. If not specify, the forward rules created by this module will be used for all the attachments."
+  default     = []
+}
+
 variable "rule_forward_vpc_attachement_count" {
   description = "How many resolver forward rule attachments should be created in the module. This value cannot be computed automatically in Terraform 0.11."
   default     = 0
@@ -209,5 +219,64 @@ variable "rule_forward_share_principal_count" {
 
 variable "rule_forward_share_principals" {
   description = "IDs of the accounts that must receive the resource shares for forward rules to be created in the module."
+  default     = []
+}
+
+#####
+# Records
+#####
+
+variable "record_zone_indexes" {
+  description = "Indexes of the zone ids (merge of the private & public zones created by this module - in this order) to bind with specific records. Must have the same number of element than: var.record_domain_names, var.record_types, etc."
+  default     = []
+}
+
+variable "record_domain_names" {
+  description = "Domain names of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones."
+  default     = []
+}
+
+variable "record_types" {
+  description = "Types (valid values are A, AAAA, CAA, CNAME, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT) of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones."
+  default     = []
+}
+
+variable "record_ttls" {
+  description = "Domain names of the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones."
+  default     = []
+}
+
+variable "record_records" {
+  description = "Object of string lists of recordsDomain names for the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. See example for proper usage."
+  default     = {}
+}
+
+variable "record_alias_zone_indexes" {
+  description = "Indexes of the zone ids (merge of the private & public zones created by this module - in this order) to bind with specific alias records. Must have the same number of element than: var.record_alias_domain_names, var.record_alias_types, etc."
+  default     = []
+}
+
+variable "record_alias_domain_names" {
+  description = "Domain names of the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones."
+  default     = []
+}
+
+variable "record_alias_types" {
+  description = "Types (valid values are A, AAAA, CAA, CNAME, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT) of the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones."
+  default     = []
+}
+
+variable "record_alias_dns_names" {
+  description = "DNS domain names for a CloudFront distribution, S3 bucket, ELB, or another resource record for the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones."
+  default     = []
+}
+
+variable "record_alias_zone_id" {
+  description = "Hosted zone ID for a CloudFront distribution, S3 bucket, ELB, or Route 53 hosted zones for the alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones."
+  default     = []
+}
+
+variable "record_alias_evaluate_healths" {
+  description = "Whether or not to evaluate the health of each alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones."
   default     = []
 }
