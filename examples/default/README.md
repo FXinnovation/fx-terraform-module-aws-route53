@@ -24,6 +24,8 @@ Note that this example may create resources which can cost money (AWS Elastic IP
 
 | Name | Description |
 |------|-------------|
+| record\_fqdns |  |
+| record\_names |  |
 | route53\_resolver\_inbound\_arns |  |
 | route53\_resolver\_inbound\_host\_vpc\_ids |  |
 | route53\_resolver\_inbound\_ids |  |

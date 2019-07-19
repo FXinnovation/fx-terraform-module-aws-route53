@@ -68,6 +68,8 @@ That’s why the resource shares created with this module must be accepted manua
 
 | Name | Description |
 |------|-------------|
+| record\_fqdns | FQDNs built using the zone domains and names of the records. |
+| record\_names | Names of the records. |
 | resolver\_inbound\_arns | ID of the security group shared with the INBOUND resolvers. |
 | resolver\_inbound\_host\_vpc\_ids | IDs of the host VPC of the the INBOUND resolvers. |
 | resolver\_inbound\_ids | ID of the security group shared with the INBOUND resolvers. |

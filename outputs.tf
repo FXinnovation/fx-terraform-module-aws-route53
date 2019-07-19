@@ -97,3 +97,17 @@ output "rule_forward_share_arns" {
   description = "ARNs of the resource shares for the resolver forward rules."
   value       = "${compact(concat(aws_ram_resource_share.this_forward.*.arn, list("")))}"
 }
+
+#####
+# Records
+#####
+
+output "record_names" {
+  description = "Names of the records."
+  value       = "${compact(concat(aws_route53_record.this.*.name, aws_route53_record.this_alias.*.name))}"
+}
+
+output "record_fqdns" {
+  description = "FQDNs built using the zone domains and names of the records."
+  value       = "${compact(concat(aws_route53_record.this.*.fqdn, aws_route53_record.this_alias.*.fqdn))}"
+}
