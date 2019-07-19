@@ -254,7 +254,7 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
 #####
 
 resource "aws_route53_resolver_rule" "this_forward" {
-  count = "${var.enable && var.rule_forward_count > 0 && length(var.rule_forward_domain_names) > 0 ? var.rule_forward_count : 0}"
+  count = "${var.enable && var.rule_forward_count > 0 && element(concat(var.rule_forward_attachement_ids, list("")), 0) == "" ? var.rule_forward_count : 0}"
 
   domain_name          = "${element(var.rule_forward_domain_names, count.index)}"
   name                 = "${element(var.rule_forward_names, count.index)}"
@@ -325,10 +325,10 @@ resource "aws_route53_record" "this" {
   count = "${var.enable && length(var.record_zone_indexes) > 0 ? length(var.record_zone_indexes) : 0}"
 
   zone_id         = "${element(local.zone_ids, element(var.record_zone_indexes, count.index))}"
-  name            = "${element(var.record_domain_names, count.index)}}"
-  type            = "${element(var.record_types, count.index)}}"
-  ttl             = "${element(var.record_ttls, count.index)}}"
-  records         = "${element(var.record_records, count.index)}}"
+  name            = "${element(var.record_domain_names, count.index)}"
+  type            = "${element(var.record_types, count.index)}"
+  ttl             = "${element(var.record_ttls, count.index)}"
+  records         = ["${var.record_records[count.index]}"]
   allow_overwrite = true
 }
 
@@ -336,13 +336,13 @@ resource "aws_route53_record" "this_alias" {
   count = "${var.enable && length(var.record_alias_zone_indexes) > 0 ? length(var.record_alias_zone_indexes) : 0}"
 
   zone_id         = "${element(local.zone_ids, element(var.record_zone_indexes, count.index))}"
-  name            = "${element(var.record_alias_domain_names, element(var.record_alias_zone_indexes, count.index))}}"
-  type            = "${element(var.record_alias_types, count.index)}}"
+  name            = "${element(var.record_alias_domain_names, element(var.record_alias_zone_indexes, count.index))}"
+  type            = "${element(var.record_alias_types, count.index)}"
   allow_overwrite = true
 
   alias {
-    name                   = "${element(var.record_alias_dns_names, count.index)}}"
-    zone_id                = "${element(var.record_alias_zone_id, count.index)}}"
-    evaluate_target_health = "${element(var.record_alias_evaluate_healths, count.index)}}"
+    name                   = "${element(var.record_alias_dns_names, count.index)}"
+    zone_id                = "${element(var.record_alias_zone_id, count.index)}"
+    evaluate_target_health = "${element(var.record_alias_evaluate_healths, count.index)}"
   }
 }

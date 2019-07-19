@@ -242,8 +242,8 @@ variable "record_ttls" {
 }
 
 variable "record_records" {
-  description = "List of string lists of recordsDomain names for the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones."
-  default     = []
+  description = "Object of string lists of recordsDomain names for the records to create. See var.record_zone_indexes as it is requited to bind records with specific zones. See example for proper usage."
+  default     = {}
 }
 
 variable "record_alias_zone_indexes" {

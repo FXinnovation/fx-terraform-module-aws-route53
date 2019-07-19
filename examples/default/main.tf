@@ -63,7 +63,7 @@ module "default" {
   zone_public_names                  = ["${random_string.this.result}.tftestpubexample.com"]
   zone_public_comments               = ["An private zone for ${random_string.this.result}.tftestpubexample.com"]
   zone_private_count                 = 1
-  zone_private_names                 = ["tftestexample.com"]
+  zone_private_names                 = ["${random_string.this.result}.tftestexample.com"]
   zone_private_comments              = ["An private zone for ${random_string.this.result}.tftestexample.com"]
   zone_private_vpc_attachement_count = 2
   zone_private_vpc_attachement_ids   = ["${aws_vpc.main.id}", "${aws_vpc.second.id}"]
@@ -120,9 +120,10 @@ module "default" {
   # Forward rules
   #####
 
-  rule_forward_count        = 1
-  rule_forward_domain_names = ["${random_string.this.result}.tftest-rule-example.com"]
-  rule_forward_names        = ["${random_string.this.result}ruleForward"]
+  rule_forward_share_indexes = []
+  rule_forward_count         = 1
+  rule_forward_domain_names  = ["${random_string.this.result}.tftest-rule-example.com"]
+  rule_forward_names         = ["${random_string.this.result}ruleForward"]
   rule_forward_resolver_target_ips = {
     "0" = [
       {
@@ -138,4 +139,22 @@ module "default" {
   }
   rule_forward_vpc_attachement_count = 3
   rule_forward_vpc_attachement_ids   = ["${data.aws_vpc.default.id}", "${aws_vpc.main.id}", "${aws_vpc.second.id}"]
+
+  #####
+  # Records
+  #####
+
+  record_zone_indexes = [0, 0, 1]
+  record_domain_names = [
+    "record1.${random_string.this.result}.tftestexample.com",
+    "record2.${random_string.this.result}.tftestexample.com",
+    "record1.${random_string.this.result}.tftestpubexample.com",
+  ]
+  record_types = ["A", "CNAME", "A"]
+  record_ttls  = ["10", "10", "60"]
+  record_records = {
+    "0" = ["${format("172.31.2.%s", random_integer.this.result)}"]
+    "1" = ["test.${random_string.this.result}.example.com", "test2.${random_string.this.result}.example.com"]
+    "2" = ["${format("1.2.3.%s", random_integer.this.result)}"]
+  }
 }
