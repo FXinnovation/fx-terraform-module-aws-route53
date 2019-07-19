@@ -39,6 +39,7 @@ That’s why the resource shares created with this module must be accepted manua
 | resolver\_outbound\_subnet\_ids | Object of lists containing the subnet IDs corresponding to the IP addresses for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_tags | Tags specific to the resolvers to be created in the module. Will be merged with tags. | map | `{}` | no |
 | rule\_forward\_attachement\_ids | IDs of the forward resolver rules that should be attached to the rule_forward_vpc_attachement_ids. If not specify, the forward rules created by this module will be used for all the attachments. | list | `[]` | no |
+| rule\_forward\_attachement\_ids\_count | How many var.rule_forward_attachement_ids. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | rule\_forward\_count | How many resolvers forward rules to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | rule\_forward\_domain\_names | Domain names of the resolvers forward rules to be created in the module. DNS queries for these domain names are forwarded to the IP addresses that are specified using target_ip. | list | `[]` | no |
 | rule\_forward\_names | Names of the resolvers forward rules to be created in the module. Friendly names that lets you easily find a rule in the Resolver dashboard in the Route 53 console. | list | `[]` | no |

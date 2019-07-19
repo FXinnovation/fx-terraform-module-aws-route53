@@ -254,7 +254,7 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
 #####
 
 resource "aws_route53_resolver_rule" "this_forward" {
-  count = "${var.enable && var.rule_forward_count > 0 && element(concat(var.rule_forward_attachement_ids, list("")), 0) == "" ? var.rule_forward_count : 0}"
+  count = "${var.enable && var.rule_forward_count > 0 && var.rule_forward_attachement_ids_count == 0 ? var.rule_forward_count : 0}"
 
   domain_name          = "${element(var.rule_forward_domain_names, count.index)}"
   name                 = "${element(var.rule_forward_names, count.index)}"

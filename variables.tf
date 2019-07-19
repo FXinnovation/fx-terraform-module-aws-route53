@@ -173,6 +173,11 @@ variable "rule_forward_tags" {
   default     = {}
 }
 
+variable "rule_forward_attachement_ids_count" {
+  description = "How many var.rule_forward_attachement_ids. This value cannot be computed automatically in Terraform 0.11."
+  default     = 0
+}
+
 variable "rule_forward_attachement_ids" {
   description = "IDs of the forward resolver rules that should be attached to the rule_forward_vpc_attachement_ids. If not specify, the forward rules created by this module will be used for all the attachments."
   default     = []
