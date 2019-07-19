@@ -154,7 +154,7 @@ module "default" {
   record_ttls  = ["10", "10", "60"]
   record_records = {
     "0" = ["${format("172.31.2.%s", random_integer.this.result)}"]
-    "1" = ["test.${random_string.this.result}.example.com", "test2.${random_string.this.result}.example.com"]
+    "1" = ["test.${random_string.this.result}.example.com"]
     "2" = ["${format("1.2.3.%s", random_integer.this.result)}"]
   }
 }
