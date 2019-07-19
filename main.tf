@@ -324,10 +324,10 @@ locals {
 resource "aws_route53_record" "this" {
   count = "${var.enable && length(var.record_zone_indexes) > 0 ? length(var.record_zone_indexes) : 0}"
 
-  zone_id         = "${element(local.zone_ids, element(var.record_zone_indexes, count.index))}"
-  name            = "${element(var.record_domain_names, count.index)}"
-  type            = "${element(var.record_types, count.index)}"
-  ttl             = "${element(var.record_ttls, count.index)}"
+  zone_id         = "${element(concat(local.zone_ids, list("")), element(var.record_zone_indexes, count.index))}"
+  name            = "${element(concat(var.record_domain_names, list("")), count.index)}"
+  type            = "${element(concat(var.record_types, list("")), count.index)}"
+  ttl             = "${element(concat(var.record_ttls, list("")), count.index)}"
   records         = ["${var.record_records[count.index]}"]
   allow_overwrite = true
 }
@@ -335,14 +335,14 @@ resource "aws_route53_record" "this" {
 resource "aws_route53_record" "this_alias" {
   count = "${var.enable && length(var.record_alias_zone_indexes) > 0 ? length(var.record_alias_zone_indexes) : 0}"
 
-  zone_id         = "${element(local.zone_ids, element(var.record_zone_indexes, count.index))}"
-  name            = "${element(var.record_alias_domain_names, element(var.record_alias_zone_indexes, count.index))}"
-  type            = "${element(var.record_alias_types, count.index)}"
+  zone_id         = "${element(concat(local.zone_ids, list("")), element(var.record_zone_indexes, count.index))}"
+  name            = "${element(concat(var.record_alias_domain_names, list("")), element(var.record_alias_zone_indexes, count.index))}"
+  type            = "${element(concat(var.record_alias_types, list("")), count.index)}"
   allow_overwrite = true
 
   alias {
-    name                   = "${element(var.record_alias_dns_names, count.index)}"
-    zone_id                = "${element(var.record_alias_zone_id, count.index)}"
-    evaluate_target_health = "${element(var.record_alias_evaluate_healths, count.index)}"
+    name                   = "${element(concat(var.record_alias_dns_names, list("")), count.index)}"
+    zone_id                = "${element(concat(var.record_alias_zone_id, list("")), count.index)}"
+    evaluate_target_health = "${element(concat(var.record_alias_evaluate_healths, list("")), count.index)}"
   }
 }
