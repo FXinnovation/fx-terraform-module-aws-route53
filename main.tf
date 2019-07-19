@@ -335,7 +335,7 @@ resource "aws_route53_record" "this" {
 resource "aws_route53_record" "this_alias" {
   count = "${var.enable && length(var.record_alias_zone_indexes) > 0 ? length(var.record_alias_zone_indexes) : 0}"
 
-  zone_id         = "${element(concat(local.zone_ids, list("")), element(var.record_zone_indexes, count.index))}"
+  zone_id         = "${element(concat(local.zone_ids, list("")), element(concat(var.record_alias_zone_indexes, list("")), count.index))}"
   name            = "${element(concat(var.record_alias_domain_names, list("")), element(var.record_alias_zone_indexes, count.index))}"
   type            = "${element(concat(var.record_alias_types, list("")), count.index)}"
   allow_overwrite = true
