@@ -82,30 +82,6 @@ resource "aws_route53_resolver_endpoint" "this_inbound" {
 # Resolver endpoints outbound
 #####
 
-resource "aws_security_group_rule" "this_outbound_out_53_all" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
-
-  type        = "egress"
-  from_port   = 53
-  to_port     = 53
-  protocol    = "all"
-  cidr_blocks = ["0.0.0.0/0"]
-}
-
-resource "aws_security_group_rule" "this_outbound_out_853_all" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
-
-  type        = "egress"
-  from_port   = 853
-  to_port     = 853
-  protocol    = "all"
-  cidr_blocks = ["0.0.0.0/0"]
-}
-
 resource "aws_route53_resolver_endpoint" "this_outbound" {
   count = "${var.enable ? var.resolver_outbound_count : 0}"
 
