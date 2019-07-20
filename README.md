@@ -7,6 +7,8 @@ Limitations:
 - All resolvers must have an exact number of 2 IPs. This cannot be worked around in Terraform 0.11.
 - There is no way to auto accept resource shares with the aws provider 2.18.
 That’s why the resource shares created with this module must be accepted manually on receiving accounts.
+- AWS does not offer a way to auto-accept zones associations between account.
+In the case zones must be shared between VPCs of different account, this should be done manually until this is solved: https://github.com/terraform-providers/terraform-provider-aws/issues/617.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
