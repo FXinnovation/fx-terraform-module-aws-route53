@@ -229,6 +229,12 @@ module "default_alternative" {
 module "default_alternative2" {
   source = "../../"
 
+  zone_private_count                 = 1
+  zone_private_ids_count             = 1
+  zone_private_ids                   = ["${element(module.default_alternative.zone_private_ids, 0)}"]
+  zone_private_vpc_attachement_count = 1
+  zone_private_vpc_attachement_ids   = ["${aws_vpc.main.id}"]
+
   rule_forward_count                 = 2
   rule_forward_attachement_ids_count = 1
   rule_forward_attachement_ids       = ["${module.default_alternative.rule_forward_ids}"]
