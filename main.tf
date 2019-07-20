@@ -49,75 +49,6 @@ resource "aws_route53_zone_association" "this_private" {
 # Resolver endpoints inbound
 #####
 
-data "aws_subnet" "this_inbound" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
-
-  id = "${element(var.resolver_inbound_subnet_ids[count.index], 0)}"
-}
-
-resource "aws_security_group" "this_inbound" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
-
-  name        = "${var.resolver_inbound_security_group_name}"
-  description = "Security group for inbound resolvers."
-  vpc_id      = "${element(data.aws_subnet.this_inbound.*.vpc_id, count.index)}"
-
-  tags = "${merge(
-    map("Terraform", "true"),
-    map("Name", var.resolver_inbound_security_group_name),
-    var.tags,
-    var.resolver_tags
-  )}"
-}
-
-resource "aws_security_group_rule" "this_inbound_53_tcp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
-
-  type        = "ingress"
-  from_port   = 53
-  to_port     = 53
-  protocol    = "tcp"
-  cidr_blocks = ["${var.resolver_inbound_security_group_allowed_cidrs}"]
-}
-
-resource "aws_security_group_rule" "this_inbound_53_udp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
-
-  type        = "ingress"
-  from_port   = 53
-  to_port     = 53
-  protocol    = "udp"
-  cidr_blocks = ["${var.resolver_inbound_security_group_allowed_cidrs}"]
-}
-
-resource "aws_security_group_rule" "this_inbound_853_tcp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
-
-  type        = "ingress"
-  from_port   = 853
-  to_port     = 853
-  protocol    = "tcp"
-  cidr_blocks = ["${var.resolver_inbound_security_group_allowed_cidrs}"]
-}
-
-resource "aws_security_group_rule" "this_inbound_853_udp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
-
-  type        = "ingress"
-  from_port   = 853
-  to_port     = 853
-  protocol    = "udp"
-  cidr_blocks = ["${var.resolver_inbound_security_group_allowed_cidrs}"]
-}
-
 resource "aws_route53_resolver_endpoint" "this_inbound" {
   count = "${var.enable ? var.resolver_inbound_count : 0}"
 
@@ -151,73 +82,28 @@ resource "aws_route53_resolver_endpoint" "this_inbound" {
 # Resolver endpoints outbound
 #####
 
-data "aws_subnet" "this_outbound" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
-
-  id = "${element(var.resolver_outbound_subnet_ids[count.index], 0)}"
-}
-
-resource "aws_security_group" "this_outbound" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
-
-  name        = "${var.resolver_outbound_security_group_name}"
-  description = "Security group for outbound resolvers."
-  vpc_id      = "${element(data.aws_subnet.this_outbound.*.vpc_id, count.index)}"
-
-  tags = "${merge(
-    map("Terraform", "true"),
-    map("Name", var.resolver_outbound_security_group_name),
-    var.tags,
-    var.resolver_tags
-  )}"
-}
-
-resource "aws_security_group_rule" "this_outbound_53_tcp" {
+resource "aws_security_group_rule" "this_outbound_out_53_all" {
   count = "${var.enable ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
-  type        = "ingress"
+  type        = "egress"
   from_port   = 53
   to_port     = 53
-  protocol    = "tcp"
-  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
+  protocol    = "all"
+  cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "this_outbound_53_udp" {
+resource "aws_security_group_rule" "this_outbound_out_853_all" {
   count = "${var.enable ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
-  type        = "ingress"
-  from_port   = 53
-  to_port     = 53
-  protocol    = "udp"
-  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
-}
-
-resource "aws_security_group_rule" "this_outbound_853_tcp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
-
-  type        = "ingress"
+  type        = "egress"
   from_port   = 853
   to_port     = 853
-  protocol    = "tcp"
-  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
-}
-
-resource "aws_security_group_rule" "this_outbound_853_udp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
-
-  security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
-
-  type        = "ingress"
-  from_port   = 853
-  to_port     = 853
-  protocol    = "udp"
-  cidr_blocks = ["${var.resolver_outbound_security_group_allowed_cidrs}"]
+  protocol    = "all"
+  cidr_blocks = ["0.0.0.0/0"]
 }
 
 resource "aws_route53_resolver_endpoint" "this_outbound" {
