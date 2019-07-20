@@ -17,7 +17,7 @@ resource "aws_route53_zone" "this_public" {
 }
 
 resource "aws_route53_zone" "this_private" {
-  count = "${var.enable ? var.zone_private_count : 0}"
+  count = "${var.enable && var.zone_private_ids_count == 0 ? var.zone_private_count : 0}"
 
   name    = "${element(var.zone_private_names, count.index)}"
   comment = "${element(var.zone_private_comments, count.index)}"
@@ -41,7 +41,7 @@ resource "aws_route53_zone" "this_private" {
 resource "aws_route53_zone_association" "this_private" {
   count = "${var.enable ? var.zone_private_vpc_attachement_count * var.zone_private_count : 0}"
 
-  zone_id = "${element(aws_route53_zone.this_private.*.id, count.index % var.zone_private_count)}"
+  zone_id = "${element(data.aws_route53_zone.this_private.*.id, count.index % var.zone_private_count)}"
   vpc_id  = "${element(var.zone_private_vpc_attachement_ids, floor(count.index / var.zone_private_count) % var.zone_private_vpc_attachement_count)}"
 }
 
@@ -317,8 +317,8 @@ resource "aws_ram_principal_association" "this_forward" {
 #####
 
 locals {
-  zone_ids   = "${compact(concat(aws_route53_zone.this_private.*.zone_id, aws_route53_zone.this_public.*.zone_id))}"
-  zone_names = "${compact(concat(aws_route53_zone.this_private.*.name, aws_route53_zone.this_public.*.name))}"
+  zone_ids   = "${compact(concat(data.aws_route53_zone.this_private.*.zone_id, aws_route53_zone.this_public.*.zone_id))}"
+  zone_names = "${compact(concat(data.aws_route53_zone.this_private.*.name, aws_route53_zone.this_public.*.name))}"
 }
 
 resource "aws_route53_record" "this" {

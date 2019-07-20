@@ -7,6 +7,9 @@ Limitations:
 - All resolvers must have an exact number of 2 IPs. This cannot be worked around in Terraform 0.11.
 - There is no way to auto accept resource shares with the aws provider 2.18.
 That’s why the resource shares created with this module must be accepted manually on receiving accounts.
+- AWS does not offer a way to auto-accept zones associations between account.
+In the case zones must be shared between VPCs of different account, this should be done manually until this is solved: https://github.com/terraform-providers/terraform-provider-aws/issues/617.
+See this https://docs.aws.amazon.com/cli/latest/reference/route53/create-vpc-association-authorization.html for manual handling.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -57,6 +60,8 @@ That’s why the resource shares created with this module must be accepted manua
 | vpc\_id | ID of the VPC where to create resources for this module. | string | `""` | no |
 | zone\_private\_comments | Comments of private hosted zones to be created in the module. | list | `[]` | no |
 | zone\_private\_count | How many private hosted zones should be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
+| zone\_private\_ids | IDs of existing private hosted zones to be used. If not specified, the module will create a new hosted zones according to other variables. | list | `[]` | no |
+| zone\_private\_ids\_count | How many existing private IDs of private hosted zones are passed. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | zone\_private\_names | Names of private hosted zones to be created in the module. | list | `[]` | no |
 | zone\_private\_vpc\_attachement\_count | How many private hosted zones attachments should be created in the module. This should not contain the current VPC. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | zone\_private\_vpc\_attachement\_ids | IDs of the VPC to be attached to the private hosted zones of this module. This should not contain the current VPC as it will be attached automatically. | list | `[]` | no |
