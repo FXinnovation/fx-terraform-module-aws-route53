@@ -46,6 +46,16 @@ variable "zone_private_count" {
   default     = 0
 }
 
+variable "zone_private_ids_count" {
+  description = "How many existing private IDs of private hosted zones are passed. This value cannot be computed automatically in Terraform 0.11."
+  default     = 0
+}
+
+variable "zone_private_ids" {
+  description = "IDs of existing private hosted zones to be used. If not specified, the module will create a new hosted zones according to other variables."
+  default     = []
+}
+
 variable "zone_private_names" {
   description = "Names of private hosted zones to be created in the module."
   default     = []
