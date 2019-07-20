@@ -9,6 +9,7 @@ Limitations:
 That’s why the resource shares created with this module must be accepted manually on receiving accounts.
 - AWS does not offer a way to auto-accept zones associations between account.
 In the case zones must be shared between VPCs of different account, this should be done manually until this is solved: https://github.com/terraform-providers/terraform-provider-aws/issues/617.
+See this https://docs.aws.amazon.com/cli/latest/reference/route53/create-vpc-association-authorization.html for manual handling.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
