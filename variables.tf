@@ -110,8 +110,13 @@ variable "resolver_inbound_security_group_name" {
   default     = "inbound-resolver"
 }
 
-variable "resolver_inbound_security_group_allowed_cidrs" {
-  description = "CIDRs allowed to perform DNS request to the INBOUND resolvers."
+variable "resolver_inbound_security_group_ingress_allowed_cidrs" {
+  description = "CIDRs allowed to perform DNS request to the INBOUND resolvers, ingress rules."
+  default     = ["10.0.0.0/8"]
+}
+
+variable "resolver_inbound_security_group_egress_allowed_cidrs" {
+  description = "CIDRs allowed to perform DNS request to the INBOUND resolvers, egress rules."
   default     = ["10.0.0.0/8"]
 }
 
@@ -144,8 +149,13 @@ variable "resolver_outbound_security_group_name" {
   default     = "outbound-resolver"
 }
 
-variable "resolver_outbound_security_group_allowed_cidrs" {
-  description = "CIDRs allowed to perform DNS request to the OUTBOUND resolvers."
+variable "resolver_outbound_security_group_ingress_allowed_cidrs" {
+  description = "CIDRs allowed to perform DNS request to the OUTBOUND resolvers, ingress rules."
+  default     = ["10.0.0.0/8"]
+}
+
+variable "resolver_outbound_security_group_egress_allowed_cidrs" {
+  description = "CIDRs allowed to perform DNS request to the OUTBOUND resolvers, egress rules."
   default     = ["10.0.0.0/8"]
 }
 

@@ -92,8 +92,9 @@ module "default" {
       "${data.aws_subnet.sub2.id}",
     ]
   }
-  resolver_inbound_security_group_name          = "${random_string.this.result}inResolver"
-  resolver_inbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+  resolver_inbound_security_group_name                  = "${random_string.this.result}inResolver"
+  resolver_inbound_security_group_ingress_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+  resolver_inbound_security_group_egress_allowed_cidrs  = ["10.0.0.0/8"]
 
   #####
   # Resolvers outbound
@@ -113,8 +114,9 @@ module "default" {
       "${data.aws_subnet.sub2.id}",
     ]
   }
-  resolver_outbound_security_group_name          = "${random_string.this.result}outResolver"
-  resolver_outbound_security_group_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+  resolver_outbound_security_group_name                  = "${random_string.this.result}outResolver"
+  resolver_outbound_security_group_ingress_allowed_cidrs = ["192.168.0.0/16", "10.0.0.0/8"]
+  resolver_outbound_security_group_egress_allowed_cidrs  = ["192.168.0.0/16", "10.0.0.0/8"]
 
   #####
   # Forward rules

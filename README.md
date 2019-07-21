@@ -31,13 +31,15 @@ See this https://docs.aws.amazon.com/cli/latest/reference/route53/create-vpc-ass
 | resolver\_inbound\_count | How many INBOUND resolvers to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | resolver\_inbound\_ip\_addresses | Object of lists containing the IP addresses corresponding to the subnet IDs for the INBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_inbound\_names | Names of the INBOUND resolvers to be created in the module. | list | `[]` | no |
-| resolver\_inbound\_security\_group\_allowed\_cidrs | CIDRs allowed to perform DNS request to the INBOUND resolvers. | list | `[ "10.0.0.0/8" ]` | no |
+| resolver\_inbound\_security\_group\_egress\_allowed\_cidrs | CIDRs allowed to perform DNS request to the INBOUND resolvers, egress rules. | list | `[ "10.0.0.0/8" ]` | no |
+| resolver\_inbound\_security\_group\_ingress\_allowed\_cidrs | CIDRs allowed to perform DNS request to the INBOUND resolvers, ingress rules. | list | `[ "10.0.0.0/8" ]` | no |
 | resolver\_inbound\_security\_group\_name | Name of the security groups shared for INBOUND resolvers. | string | `"inbound-resolver"` | no |
 | resolver\_inbound\_subnet\_ids | Object of lists containing the subnet IDs corresponding to the IP addresses for the INBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_outbound\_count | How many OUTBOUND resolvers to be created in the module. This value cannot be computed automatically in Terraform 0.11. | string | `"0"` | no |
 | resolver\_outbound\_ip\_addresses | Object of lists containing the IP addresses corresponding to the subnet IDs for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_outbound\_names | Names of the OUTBOUND resolvers to be created in the module. | list | `[]` | no |
-| resolver\_outbound\_security\_group\_allowed\_cidrs | CIDRs allowed to perform DNS request to the OUTBOUND resolvers. | list | `[ "10.0.0.0/8" ]` | no |
+| resolver\_outbound\_security\_group\_egress\_allowed\_cidrs | CIDRs allowed to perform DNS request to the OUTBOUND resolvers, egress rules. | list | `[ "10.0.0.0/8" ]` | no |
+| resolver\_outbound\_security\_group\_ingress\_allowed\_cidrs | CIDRs allowed to perform DNS request to the OUTBOUND resolvers, ingress rules. | list | `[ "10.0.0.0/8" ]` | no |
 | resolver\_outbound\_security\_group\_name | Name of the security groups shared for OUTBOUND resolvers. | string | `"outbound-resolver"` | no |
 | resolver\_outbound\_subnet\_ids | Object of lists containing the subnet IDs corresponding to the IP addresses for the OUTBOUND resolvers to be created in the module. Look at examples for correct usage. | map | `{}` | no |
 | resolver\_tags | Tags specific to the resolvers to be created in the module. Will be merged with tags. | map | `{}` | no |

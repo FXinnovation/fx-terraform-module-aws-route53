@@ -3,3 +3,15 @@ data "aws_route53_zone" "this_private" {
 
   zone_id = "${element(concat(var.zone_private_ids, list("")), 0) == "" ? element(concat(aws_route53_zone.this_private.*.id, list("")), 0) : element(concat(var.zone_private_ids, list("")), count.index)}"
 }
+
+data "aws_subnet" "this_inbound" {
+  count = "${var.enable ? var.resolver_inbound_count : 0}"
+
+  id = "${element(var.resolver_inbound_subnet_ids[count.index], 0)}"
+}
+
+data "aws_subnet" "this_outbound" {
+  count = "${var.enable ? var.resolver_outbound_count : 0}"
+
+  id = "${element(var.resolver_outbound_subnet_ids[count.index], 0)}"
+}
