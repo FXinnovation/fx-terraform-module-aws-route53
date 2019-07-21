@@ -18,7 +18,7 @@ resource "aws_security_group" "this_inbound" {
 }
 
 resource "aws_security_group_rule" "this_inbound_53_tcp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "this_inbound_53_tcp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_53_udp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -42,7 +42,7 @@ resource "aws_security_group_rule" "this_inbound_53_udp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_853_tcp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -54,7 +54,7 @@ resource "aws_security_group_rule" "this_inbound_853_tcp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_853_udp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -66,7 +66,7 @@ resource "aws_security_group_rule" "this_inbound_853_udp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_out_53_tcp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -78,7 +78,7 @@ resource "aws_security_group_rule" "this_inbound_out_53_tcp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_out_53_udp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -90,7 +90,7 @@ resource "aws_security_group_rule" "this_inbound_out_53_udp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_out_853_tcp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -102,7 +102,7 @@ resource "aws_security_group_rule" "this_inbound_out_853_tcp" {
 }
 
 resource "aws_security_group_rule" "this_inbound_out_853_udp" {
-  count = "${var.enable ? var.resolver_inbound_count : 0}"
+  count = "${var.enable && length(var.resolver_inbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_inbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_inbound.*.id, count.index)}"
 
@@ -133,7 +133,7 @@ resource "aws_security_group" "this_outbound" {
 }
 
 resource "aws_security_group_rule" "this_outbound_53_tcp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
@@ -145,7 +145,7 @@ resource "aws_security_group_rule" "this_outbound_53_tcp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_53_udp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
@@ -157,7 +157,7 @@ resource "aws_security_group_rule" "this_outbound_53_udp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_853_tcp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
@@ -169,7 +169,7 @@ resource "aws_security_group_rule" "this_outbound_853_tcp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_853_udp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_ingress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
@@ -181,7 +181,7 @@ resource "aws_security_group_rule" "this_outbound_853_udp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_out_53_tcp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
@@ -193,7 +193,7 @@ resource "aws_security_group_rule" "this_outbound_out_53_tcp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_out_53_udp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
@@ -205,7 +205,7 @@ resource "aws_security_group_rule" "this_outbound_out_53_udp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_out_853_tcp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
@@ -217,7 +217,7 @@ resource "aws_security_group_rule" "this_outbound_out_853_tcp" {
 }
 
 resource "aws_security_group_rule" "this_outbound_out_853_udp" {
-  count = "${var.enable ? var.resolver_outbound_count : 0}"
+  count = "${var.enable && length(var.resolver_outbound_security_group_egress_allowed_cidrs) > 0 ? var.resolver_outbound_count : 0}"
 
   security_group_id = "${element(aws_security_group.this_outbound.*.id, count.index)}"
 
