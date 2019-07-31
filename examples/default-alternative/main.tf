@@ -204,13 +204,13 @@ module "default_alternative" {
   # Resource share
   #####
 
-  rule_forward_share_indexes = [0]
-  rule_forward_share_names   = ["${random_string.this.result}resShare1"]
+  rule_forward_share_indexes = [0, 1]
+  rule_forward_share_names   = ["${random_string.this.result}resShare1", "${random_string.this.result}resShare2"]
   rule_forward_share_tags = {
     Name = "${random_string.this.result}tftest"
   }
-  rule_forward_share_principal_count = 1
-  rule_forward_share_principals      = ["203977111394"]
+  rule_forward_share_principal_count = 2
+  rule_forward_share_principals      = ["203977111394", "${data.aws_vpc.default.id}"]
 
   #####
   # Records alias
