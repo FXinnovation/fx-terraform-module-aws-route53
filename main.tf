@@ -168,10 +168,10 @@ resource "aws_ram_resource_association" "this_forward" {
 }
 
 resource "aws_ram_principal_association" "this_forward" {
-  count = "${var.enable && length(var.rule_forward_share_indexes) > 0 && var.rule_forward_share_principal_count > 0 ? var.rule_forward_share_principal_count : 0}"
+  count = "${var.enable && length(var.rule_forward_share_indexes) > 0 && var.rule_forward_share_principal_count > 0 ? length(var.rule_forward_share_indexes) * var.rule_forward_share_principal_count : 0}"
 
-  principal          = "${element(var.rule_forward_share_principals, count.index)}"
-  resource_share_arn = "${element(aws_ram_resource_share.this_forward.*.arn, count.index)}"
+  principal          = "${element(var.rule_forward_share_principals, count.index % var.rule_forward_share_principal_count)}"
+  resource_share_arn = "${element(aws_ram_resource_share.this_forward.*.arn, floor(count.index / var.rule_forward_share_principal_count) % length(var.rule_forward_share_indexes))}"
 }
 
 #####
