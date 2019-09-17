@@ -17,7 +17,7 @@ resource "random_string" "this" {
 }
 
 resource "random_integer" "this" {
-  min = 1
+  min = 4
   max = 254
 }
 
