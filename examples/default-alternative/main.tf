@@ -1,5 +1,5 @@
 provider "aws" {
-  version    = "~> 2.18.0"
+  version    = "~> 2"
   region     = "eu-west-2"
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
@@ -17,7 +17,7 @@ resource "random_string" "this" {
 }
 
 resource "random_integer" "this" {
-  min = 1
+  min = 4
   max = 254
 }
 

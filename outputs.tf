@@ -7,9 +7,43 @@ output "zone_private_ids" {
   value       = "${compact(concat(aws_route53_zone.this_private.*.zone_id, list("")))}"
 }
 
+output "zone_private_name_servers" {
+  description = "A list of name servers in associated (or default) delegation set."
+
+  #value       = "${compact(concat(aws_route53_zone.this_private.*.name_servers, list("")))}"
+  value = "${flatten(aws_route53_zone.this_private.*.name_servers)}"
+}
+
 output "zone_public_ids" {
   description = "IDs of the public hosted zones."
   value       = "${compact(concat(aws_route53_zone.this_public.*.zone_id, list("")))}"
+}
+
+output "zone_public_name_servers" {
+  description = "A list of name servers in associated (or default) delegation set."
+
+  #value       = "${compact(concat(aws_route53_zone.this_public.*.name_servers, list("")))}"
+  value = "${flatten(aws_route53_zone.this_public.*.name_servers)}"
+}
+
+output "zone_association_private_id" {
+  description = "The calculated unique identifier for the association."
+  value       = "${compact(concat(aws_route53_zone_association.this_private.*.id, list("")))}"
+}
+
+output "zone_association_private_zone_id" {
+  description = "The ID of the hosted zone for the association."
+  value       = "${compact(concat(aws_route53_zone_association.this_private.*.zone_id, list("")))}"
+}
+
+output "zone_association_private_vpc_id" {
+  description = "The ID of the VPC for the association."
+  value       = "${compact(concat(aws_route53_zone_association.this_private.*.vpc_id, list("")))}"
+}
+
+output "zone_association_private_vpc_region" {
+  description = "The region in which the VPC identified by vpc_id was created."
+  value       = "${compact(concat(aws_route53_zone_association.this_private.*.vpc_region, list("")))}"
 }
 
 #####
@@ -84,6 +118,11 @@ output "rule_forward_share_statuses" {
   value       = "${compact(concat(aws_route53_resolver_rule.this_forward.*.share_status, list("")))}"
 }
 
+output "rule_association_forward_id" {
+  description = "The ID of the resolver rule association."
+  value       = "${compact(concat(aws_route53_resolver_rule_association.this_forward.*.id, list("")))}"
+}
+
 #####
 # Resource share
 #####
@@ -96,6 +135,16 @@ output "rule_forward_share_ids" {
 output "rule_forward_share_arns" {
   description = "ARNs of the resource shares for the resolver forward rules."
   value       = "${compact(concat(aws_ram_resource_share.this_forward.*.arn, list("")))}"
+}
+
+output "resource_association_forward_id" {
+  description = "The Amazon Resource Name (ARN) of the resource share."
+  value       = "${compact(concat(aws_ram_resource_association.this_forward.*.id, list("")))}"
+}
+
+output "principal_association_forward_id" {
+  description = "The Amazon Resource Name (ARN) of the Resource Share and the principal, separated by a comma."
+  value       = "${compact(concat(aws_ram_principal_association.this_forward.*.id, list("")))}"
 }
 
 #####
