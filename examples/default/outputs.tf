@@ -156,4 +156,3 @@ output "route53_record_fqdns" {
   description = "FQDNs built using the zone domains and names of the records."
   value       = module.default.record_fqdns
 }
-

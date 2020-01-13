@@ -236,4 +236,3 @@ module "default_alternative2" {
   rule_forward_vpc_attachement_count = 1
   rule_forward_vpc_attachement_ids   = [data.aws_vpc.default.id]
 }
-

@@ -15,4 +15,3 @@ data "aws_subnet" "this_outbound" {
 
   id = element(var.resolver_outbound_subnet_ids[count.index], 0)
 }
-

@@ -154,7 +154,7 @@ resource "aws_route53_resolver_rule" "this_forward" {
   dynamic "target_ip" {
     for_each = [var.rule_forward_resolver_target_ips[count.index]]
     content {
-      ip   = target_ip.value
+      ip = target_ip.value
     }
   }
 
@@ -257,9 +257,9 @@ resource "aws_route53_record" "this" {
     concat(local.zone_ids, [""]),
     element(var.record_zone_indexes, count.index),
   )
-  name = element(concat(var.record_domain_names, [""]), count.index)
-  type = element(concat(var.record_types, [""]), count.index)
-  ttl  = element(concat(var.record_ttls, [""]), count.index)
+  name            = element(concat(var.record_domain_names, [""]), count.index)
+  type            = element(concat(var.record_types, [""]), count.index)
+  ttl             = element(concat(var.record_ttls, [""]), count.index)
   records         = [var.record_records[count.index]]
   allow_overwrite = true
 }
@@ -284,4 +284,3 @@ resource "aws_route53_record" "this_alias" {
     evaluate_target_health = element(concat(var.record_alias_evaluate_healths, [""]), count.index)
   }
 }
-

@@ -205,4 +205,3 @@ output "record_fqdns" {
     ),
   )
 }
-

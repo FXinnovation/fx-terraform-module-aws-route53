@@ -235,4 +235,3 @@ resource "aws_security_group_rule" "this_outbound_out_853_udp" {
   protocol    = "udp"
   cidr_blocks = var.resolver_outbound_security_group_egress_allowed_cidrs
 }
-

@@ -76,6 +76,7 @@ See this https://docs.aws.amazon.com/cli/latest/reference/route53/create-vpc-ass
 
 | Name | Description |
 |------|-------------|
+| principal\_association\_forward\_id | The Amazon Resource Name (ARN) of the Resource Share and the principal, separated by a comma. |
 | record\_fqdns | FQDNs built using the zone domains and names of the records. |
 | record\_names | Names of the records. |
 | resolver\_inbound\_arns | ID of the security group shared with the INBOUND resolvers. |
@@ -86,13 +87,21 @@ See this https://docs.aws.amazon.com/cli/latest/reference/route53/create-vpc-ass
 | resolver\_outbound\_host\_vpc\_ids | IDs of the host VPC of the the OUTBOUND resolvers. |
 | resolver\_outbound\_ids | ID of the security group shared with the OUTBOUND resolvers. |
 | resolver\_outbound\_security\_group\_id | ID of the security group shared with the OUTBOUND resolvers. |
+| resource\_association\_forward\_id | The Amazon Resource Name (ARN) of the resource share. |
+| rule\_association\_forward\_id | The ID of the resolver rule association. |
 | rule\_forward\_arns | ARNs of the resolver rules. |
 | rule\_forward\_ids | IDs of the resolver rules. |
 | rule\_forward\_owner\_ids | When the rules are shared with other AWS accounts, the account IDs of the accounts that the rules are shared with. |
 | rule\_forward\_share\_arns | ARNs of the resource shares for the resolver forward rules. |
 | rule\_forward\_share\_ids | IDs of the resource shares for the resolver forward rules. |
 | rule\_forward\_share\_statuses | Whether the rules are shared and, if so, whether the current account is sharing the rules with other accounts, or another account is sharing the rules with the current account. Values are NOT_SHARED, SHARED_BY_ME or SHARED_WITH_ME. |
+| zone\_association\_private\_id | The calculated unique identifier for the association. |
+| zone\_association\_private\_vpc\_id | The ID of the VPC for the association. |
+| zone\_association\_private\_vpc\_region | The region in which the VPC identified by vpc_id was created. |
+| zone\_association\_private\_zone\_id | The ID of the hosted zone for the association. |
 | zone\_private\_ids | IDs of the private hosted zones. |
+| zone\_private\_name\_servers | A list of name servers in associated (or default) delegation set. |
 | zone\_public\_ids | IDs of the public hosted zones. |
+| zone\_public\_name\_servers | A list of name servers in associated (or default) delegation set. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -160,4 +160,3 @@ module "default" {
     "2" = [format("1.2.3.%s", random_integer.this.result)]
   }
 }
-
