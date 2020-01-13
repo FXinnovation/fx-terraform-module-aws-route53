@@ -128,12 +128,8 @@ module "default" {
   rule_forward_names         = ["${random_string.this.result}ruleForward"]
   rule_forward_resolver_target_ips = {
     "0" = [
-      {
-        ip = "123.45.67.5"
-      },
-      {
-        ip = "123.45.68.5"
-      },
+      "123.45.67.5",
+      "123.45.68.5"
     ]
   }
   rule_forward_tags = {
