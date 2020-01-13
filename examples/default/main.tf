@@ -1,8 +1,8 @@
 provider "aws" {
   version    = "~> 2"
   region     = "eu-west-2"
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
+  access_key = var.access_key
+  secret_key = var.secret_key
 
   assume_role {
     role_arn     = "arn:aws:iam::700633540182:role/OrganizationAccountAccessRole"
@@ -26,12 +26,12 @@ data "aws_vpc" "default" {
 }
 
 data "aws_subnet" "sub1" {
-  vpc_id     = "${data.aws_vpc.default.id}"
+  vpc_id     = data.aws_vpc.default.id
   cidr_block = "172.31.0.0/20"
 }
 
 data "aws_subnet" "sub2" {
-  vpc_id     = "${data.aws_vpc.default.id}"
+  vpc_id     = data.aws_vpc.default.id
   cidr_block = "172.31.16.0/20"
 }
 
@@ -53,7 +53,7 @@ module "default" {
     Name = "${random_string.this.result}tftest"
   }
 
-  vpc_id = "${data.aws_vpc.default.id}"
+  vpc_id = data.aws_vpc.default.id
 
   #####
   # Hosted zone
@@ -66,7 +66,7 @@ module "default" {
   zone_private_names                 = ["${random_string.this.result}.tftestexample.com"]
   zone_private_comments              = ["An private zone for ${random_string.this.result}.tftestexample.com"]
   zone_private_vpc_attachement_count = 2
-  zone_private_vpc_attachement_ids   = ["${aws_vpc.main.id}", "${aws_vpc.second.id}"]
+  zone_private_vpc_attachement_ids   = [aws_vpc.main.id, aws_vpc.second.id]
   zone_tags = {
     Name = "${random_string.this.result}tftest"
   }
@@ -82,14 +82,14 @@ module "default" {
   resolver_inbound_names = ["${random_string.this.result}inResolver"]
   resolver_inbound_ip_addresses = {
     "0" = [
-      "${format("172.31.0.%s", random_integer.this.result)}",
-      "${format("172.31.16.%s", random_integer.this.result)}",
+      format("172.31.0.%s", random_integer.this.result),
+      format("172.31.16.%s", random_integer.this.result),
     ]
   }
   resolver_inbound_subnet_ids = {
     "0" = [
-      "${data.aws_subnet.sub1.id}",
-      "${data.aws_subnet.sub2.id}",
+      data.aws_subnet.sub1.id,
+      data.aws_subnet.sub2.id,
     ]
   }
   resolver_inbound_security_group_name                  = "${random_string.this.result}inResolver"
@@ -104,14 +104,14 @@ module "default" {
   resolver_outbound_names = ["${random_string.this.result}outResolver"]
   resolver_outbound_ip_addresses = {
     "0" = [
-      "${format("172.31.1.%s", random_integer.this.result)}",
-      "${format("172.31.17.%s", random_integer.this.result)}",
+      format("172.31.1.%s", random_integer.this.result),
+      format("172.31.17.%s", random_integer.this.result),
     ]
   }
   resolver_outbound_subnet_ids = {
     "0" = [
-      "${data.aws_subnet.sub1.id}",
-      "${data.aws_subnet.sub2.id}",
+      data.aws_subnet.sub1.id,
+      data.aws_subnet.sub2.id,
     ]
   }
   resolver_outbound_security_group_name                  = "${random_string.this.result}outResolver"
@@ -140,7 +140,7 @@ module "default" {
     Name = "${random_string.this.result}tftest"
   }
   rule_forward_vpc_attachement_count = 3
-  rule_forward_vpc_attachement_ids   = ["${data.aws_vpc.default.id}", "${aws_vpc.main.id}", "${aws_vpc.second.id}"]
+  rule_forward_vpc_attachement_ids   = [data.aws_vpc.default.id, aws_vpc.main.id, aws_vpc.second.id]
 
   #####
   # Records
@@ -155,8 +155,9 @@ module "default" {
   record_types = ["A", "CNAME", "A"]
   record_ttls  = ["10", "10", "60"]
   record_records = {
-    "0" = ["${format("172.31.2.%s", random_integer.this.result)}"]
+    "0" = [format("172.31.2.%s", random_integer.this.result)]
     "1" = ["test.${random_string.this.result}.example.com"]
-    "2" = ["${format("1.2.3.%s", random_integer.this.result)}"]
+    "2" = [format("1.2.3.%s", random_integer.this.result)]
   }
 }
+

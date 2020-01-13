@@ -300,3 +300,4 @@ variable "record_alias_evaluate_healths" {
   description = "Whether or not to evaluate the health of each alias records to create. See var.record_alias_zone_indexes as it is requited to bind records with specific zones."
   default     = []
 }
+
