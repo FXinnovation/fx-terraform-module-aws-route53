@@ -260,7 +260,7 @@ resource "aws_route53_record" "this" {
   name            = element(concat(var.record_domain_names, [""]), count.index)
   type            = element(concat(var.record_types, [""]), count.index)
   ttl             = element(concat(var.record_ttls, [""]), count.index)
-  records         = [element(concat(var.record_records, [""]), count.index)]
+  records         = [lookup(var.record_records, count.index)]
   allow_overwrite = true
 }
 
