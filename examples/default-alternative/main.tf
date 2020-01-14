@@ -176,7 +176,7 @@ module "default_alternative" {
     "0" = [
       "123.45.1.10",
       "123.45.1.16"
-    ]
+    ],
     "1" = [
       "123.45.2.10",
       "123.45.2.16"
@@ -224,7 +224,7 @@ module "default_alternative2" {
 
   rule_forward_count                 = 2
   rule_forward_attachement_ids_count = 1
-  rule_forward_attachement_ids       = [module.default_alternative.rule_forward_ids]
+  rule_forward_attachement_ids       = module.default_alternative.rule_forward_ids
   rule_forward_vpc_attachement_count = 1
   rule_forward_vpc_attachement_ids   = [data.aws_vpc.default.id]
 }
