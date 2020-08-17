@@ -60,12 +60,12 @@ resource "aws_route53_resolver_endpoint" "this_inbound" {
   ]
 
   // This must be computed dynamically when transforming 0.11 in 0.12
-  ip_address = {
+  ip_address {
     ip        = "${element(var.resolver_inbound_ip_addresses[count.index], 0)}"
     subnet_id = "${element(var.resolver_inbound_subnet_ids[count.index], 0)}"
   }
 
-  ip_address = {
+  ip_address {
     ip        = "${element(var.resolver_inbound_ip_addresses[count.index], 1)}"
     subnet_id = "${element(var.resolver_inbound_subnet_ids[count.index], 1)}"
   }
@@ -93,12 +93,12 @@ resource "aws_route53_resolver_endpoint" "this_outbound" {
   ]
 
   // This must be computed dynamically when transforming 0.11 in 0.12
-  ip_address = {
+  ip_address {
     ip        = "${element(var.resolver_outbound_ip_addresses[count.index], 0)}"
     subnet_id = "${element(var.resolver_outbound_subnet_ids[count.index], 0)}"
   }
 
-  ip_address = {
+  ip_address {
     ip        = "${element(var.resolver_outbound_ip_addresses[count.index], 1)}"
     subnet_id = "${element(var.resolver_outbound_subnet_ids[count.index], 1)}"
   }
